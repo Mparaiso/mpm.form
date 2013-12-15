@@ -12,7 +12,8 @@
   "devDependencies":{
     "mocha":"*",
     "chai":"*",
-    "source-map-support":"*"
+    "source-map-support":"*",
+    "typescript":"*"
   },
   "repository": {
     "type": "git",

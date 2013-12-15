@@ -155,14 +155,14 @@ module widget{
 
 	export class Choices extends Base{
 		type="choices";
-		_choices:Array<Choice>;
+		_choices;
 		constructor(name,options){
 			super(name,options);
 			this.choices = this.options.choices||[];
 		}
 		get choices(){return this._choices;}
 		set choices(value){ this._choices=this.normaLizeChoices(value);}
-		normaLizeChoices(choices:Array){
+		normaLizeChoices(choices){
 			return choices.map((choice,i)=>{
 				var o;
 				if(_.isString(choice)){
@@ -198,7 +198,7 @@ module widget{
 				,options:this.choices.map(Option.fromData)
 			});
 		}
-		setData(data:Array){
+		setData(data:Array<any>){
 			this._data=_.isArray(data)?data:[data];
 			this._choices.forEach(c=>{
 				if(c.value in this._data){

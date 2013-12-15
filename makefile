@@ -10,4 +10,6 @@ push: commit
 	@git push origin master || : 
 publish:
 	@npm publish
+build:
+	@node_modules/.bin/tsc typescript-sources/mpm.form.ts --outDir js --module commonjs --declaration --sourcemap --target ES5
 .PHONY: test install commit push

@@ -4,6 +4,7 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
+
 var util = require('util');
 var _ = require('underscore');
 
@@ -449,7 +450,7 @@ var form;
     form.FormBuilder = FormBuilder;
     form.createFormBuilder = function () {
         var form = new FormBuilder();
-        form.addWidgetLoader(new WidgetLoader());
+        form.addWidgetLoader(new WidgetLoader);
         return form;
     };
 })(form || (form = {}));

@@ -1,0 +1,309 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 58.0,
+		"selected_items":
+		[
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"fe",
+				"Fetch: File"
+			],
+			[
+				"fetc",
+				"Fetch: Manage"
+			],
+			[
+				"fetch",
+				"Fetch: File"
+			],
+			[
+				"fet",
+				"Fetch: Manage"
+			],
+			[
+				"cap",
+				"Convert Case: Upper Case"
+			]
+		],
+		"width": 416.0
+	},
+	"console":
+	{
+		"height": 308.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/development/categories/node/mpm.form/index.js",
+		"/C/development/categories/node/mpm.form/typescript-sources/utils.ts",
+		"/C/development/categories/node/mpm.form/typescript-sources/widget.ts",
+		"/C/development/categories/node/mpm.form/typescript-sources/form.ts",
+		"/C/development/categories/node/mpm.form/test/form.test.js",
+		"/C/development/categories/node/mpm.form/makefile",
+		"/C/development/categories/node/mpm.form/package.json",
+		"/C/development/categories/node/mpm.form/temp/quick-form-test.js",
+		"/C/development/categories/node/mpm.form/README.md",
+		"/C/Users/mark prades/AppData/Roaming/Sublime Text 2/Packages/User/Typescript.sublime-settings",
+		"/C/development/categories/node/mpm.form/mpm.form.sublime-project",
+		"/C/development/categories/node/mpm.form/js/widget.js",
+		"/C/development/categories/node/mpm.form/js/form.js",
+		"/C/development/categories/node/express-video/temp/form-quick-test.js",
+		"/C/development/categories/node/express-video/js/forms.js",
+		"/C/development/categories/node/express-video/typescript-source-files/forms.ts",
+		"/C/development/categories/node/express-video/typescript-source-files/what",
+		"/C/development/categories/node/express-video/form.ts",
+		"/C/development/categories/node/express-video/makefile",
+		"/C/Users/mark prades/AppData/Roaming/Sublime Text 2/Packages/T3S/README.md",
+		"/C/development/categories/node/express-video/js/form.d.ts",
+		"/C/development/categories/node/express-video/js/form.js",
+		"/c/development/categories/node/express-video/lib/form.ts",
+		"/C/development/categories/node/express-video/test/form.test.js",
+		"/C/Users/mark prades/AppData/Roaming/Sublime Text 2/Packages/Default/Default (Windows).sublime-keymap",
+		"/C/development/categories/node/express-video/express-video.sublime-project",
+		"/C/development/categories/node/express-video/lib/form.js",
+		"/C/development/categories/node/express-video/lib/form.d.ts",
+		"/C/development/categories/node/express-video/lib/form.ts",
+		"/C/development/categories/node/express-video/node_modules/chai/README.md",
+		"/C/development/categories/node/express-video/ts/node.d.ts",
+		"/C/development/categories/node/express-video/ts/.gitkeep",
+		"/C/Users/mark prades/AppData/Roaming/Sublime Text 2/Packages/T3S/Typescript.sublime-settings",
+		"/C/development/categories/node/express-video/lib/duration.js",
+		"/C/development/categories/node/express-video/package.json",
+		"/C/development/categories/node/express-video/README.md",
+		"/C/development/categories/node/express-video/test/app.test.js",
+		"/C/development/categories/node/express-video/app.js",
+		"/C/Users/mark prades/AppData/Roaming/Sublime Text 2/Packages/User/SublimeCodeIntel.sublime-settings",
+		"/C/development/categories/node/express-video/public/stylesheets/style.less",
+		"/C/development/categories/node/express-video/.gitignore",
+		"/C/Users/mark prades/AppData/Roaming/Sublime Text 2/Packages/User/SublimeLinter.sublime-settings",
+		"/C/Users/mark prades/AppData/Roaming/Sublime Text 2/Packages/SublimeLinter/SublimeLinter.sublime-settings",
+		"/C/development/categories/node/express-video/node_modules/.bin/mocha",
+		"/C/Users/mark prades/AppData/Roaming/Sublime Text 2/Packages/SublimeCodeIntel/README.rst",
+		"/C/development/categories/node/express-video/routes/user.js",
+		"/C/Users/mark prades/AppData/Roaming/Sublime Text 2/Packages/SublimeCodeIntel/SublimeCodeIntel.sublime-settings",
+		"/C/development/categories/javascript/nicolas-marmion-front/web/static/lib/underscore.min.js",
+		"/c/development/categories/javascript/nicolas-marmion-front/web/static/src/main.ts",
+		"/C/Users/mark prades/AppData/Roaming/Sublime Text 2/Packages/T3S/Typescript.build.js",
+		"/C/development/categories/javascript/nicolas-marmion-front/README.md",
+		"/C/development/categories/javascript/nicolas-marmion-front/web/static/css/styles.less",
+		"/C/development/categories/javascript/nicolas-marmion-front/web/index.html",
+		"/c/development/categories/javascript/nicolas-marmion-front/nicolas-marmion.sublime-project",
+		"/C/development/categories/javascript/nicolas-marmion-front/web/static/src/main.ts",
+		"/C/development/categories/javascript/nicolas-marmion-front/web/test.html",
+		"/C/Users/mark prades/AppData/Roaming/Sublime Text 2/Packages/SublimeLinter/SublimeLinter.py",
+		"/C/Users/mark prades/AppData/Roaming/Sublime Text 2/Packages/Less2Css/less2css.py",
+		"/C/Users/mark prades/AppData/Roaming/Sublime Text 2/Packages/Less2Css/lesscompiler.py",
+		"/C/Users/mark prades/AppData/Roaming/Sublime Text 2/Packages/SublimeLinter/sublimelinter/modules/base_linter.py",
+		"/C/Users/mark prades/AppData/Roaming/Sublime Text 2/Packages/Less2Css/README.md",
+		"/c/development/categories/javascript/nicolas-marmion-front/web/static/lib/jquery.min.js",
+		"/C/Users/mark prades/AppData/Roaming/Sublime Text 2/Packages/User/Fetch.sublime-settings",
+		"/c/development/categories/python/tsc-lint/plugin.py",
+		"/c/development/categories/python/tsc-lint/assets/file.ts",
+		"/c/development/categories/python/tsc-lint/assets/typescript-test.sublime-workspace",
+		"/c/development/categories/python/tsc-lint/assets/main.ts",
+		"/C/Users/mark prades/AppData/Roaming/Sublime Text 2/Packages/sublime-typescript/typescript.py",
+		"/C/Users/mark prades/Desktop/T3S/README.md",
+		"/C/Users/mark prades/AppData/Roaming/Sublime Text 2/Packages/sublime-typescript/typescript.pyc",
+		"/C/Users/mark prades/AppData/Roaming/Sublime Text 2/Packages/sublime-typescript/README.md",
+		"/C/Users/mark prades/AppData/Roaming/Sublime Text 2/Packages/sublime-typescript/src/ts/main.ts",
+		"/C/Users/mark prades/AppData/Roaming/Sublime Text 2/Packages/sublime-typescript/src/ts/compilerservice.ts",
+		"/c/development/categories/python/tsc-lint/lib/typescript.js",
+		"/c/development/categories/python/tsc-lint/assets/typescript-test.sublime-project",
+		"/C/Users/mark prades/AppData/Roaming/Sublime Text 2/Packages/T3S/Typescript.py",
+		"/C/Users/mark prades/AppData/Roaming/Sublime Text 2/Packages/SublimeLinter/sublimelinter/modules/perl.py",
+		"/C/Users/mark prades/AppData/Roaming/Sublime Text 2/Packages/SublimeLinter/README.md",
+		"/C/Users/mark prades/AppData/Roaming/Sublime Text 2/Packages/SublimeLinter/sublimelinter/modules/css.py",
+		"/C/Users/mark prades/AppData/Roaming/Sublime Text 2/Packages/SublimeLinter/sublimelinter/modules/typescript.py",
+		"/C/development/categories/javascript/coordinates/node_modules/typescript/bin/tsc.js",
+		"/C/development/categories/javascript/coordinates/node_modules/typescript/bin/tsc",
+		"/C/Users/mark prades/AppData/Roaming/Sublime Text 2/Packages/SublimeLinter/sublimelinter/modules/php.py",
+		"/C/Users/mark prades/AppData/Roaming/Sublime Text 2/Packages/User/tslint.py",
+		"/C/Users/mark prades/AppData/Roaming/Sublime Text 2/Packages/SublimeLinter/SublimeLinter.pyc",
+		"/C/Users/mark prades/AppData/Roaming/Sublime Text 2/Packages/SublimeLinter/sublimelinter/loader.py",
+		"/C/development/lib/composer/composer.json",
+		"/C/development/categories/scala/introduction/UsingScala/SampleGUI.scala"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"utils",
+			"data",
+			"toJSON",
+			"options.options",
+			"||",
+			"_option",
+			"option",
+			"forms",
+			"form.",
+			"project",
+			"<code>.*</code>",
+			"key",
+			"map",
+			"');\n",
+			"attributes",
+			"module",
+			"javasc",
+			"disable",
+			"js",
+			"build",
+			"startupinfo",
+			"get_startupinfo",
+			"subprocess",
+			"5",
+			"loading_files",
+			"AtomicValue",
+			"int",
+			"()\n",
+			"t",
+			"def run_",
+			"def run(",
+			"windowcommand",
+			"def run",
+			"run",
+			"run_once",
+			"process",
+			"threading",
+			"run_once",
+			"enable_save_onl",
+			"command",
+			"run",
+			"messages",
+			"add_message",
+			"run",
+			"parse_errors",
+			"debug",
+			"output",
+			"sublime.",
+			"check_enabled",
+			"get_executable",
+			"print",
+			"out",
+			"console",
+			"addNode",
+			"addnode",
+			"removenode"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"options.choices",
+			"radio",
+			"data",
+			"forms.",
+			"/**\n"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": true,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 34.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 203.0
+	},
+	"replace":
+	{
+		"height": 62.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": false,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 209.0,
+	"status_bar_visible": true
+}

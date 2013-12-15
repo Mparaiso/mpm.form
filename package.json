@@ -1,0 +1,31 @@
+{
+  "name": "mpm.form",
+  "version": "0.0.1",
+  "description": "Form library",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "dependencies":{
+    "underscore":"*"
+  },
+  "devDependencies":{
+    "mocha":"*",
+    "chai":"*",
+    "source-map-support":"*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Mparaiso/mpm.form"
+  },
+  "keywords": [
+    "forms",
+    "form",
+    "web"
+  ],
+  "author": "mparaiso",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Mparaiso/mpm.form/issues"
+  }
+}

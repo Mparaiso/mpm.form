@@ -355,8 +355,13 @@ var form;
         }
         WidgetLoader.prototype.getWidget = function (type, name, options) {
             switch (type) {
+                case "checkgroup":
                 case "checkboxgroup":
                     return new widget.CheckboxGroup(name, options);
+                case "check":
+                    return new widget.Check(name, options);
+                case "radio":
+                    return new widget.Radio(name, options);
                 case "radiogroup":
                     return new widget.RadioGroup(name, options);
                 case "select":

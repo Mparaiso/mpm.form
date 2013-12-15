@@ -45,10 +45,18 @@ module widget{
 				this.options.label = this.name;
 			}			
 		}
+		/**
+		 * render attributes
+		 * @type {[String]}
+		 */
 		renderAttributes(attrs:Object){
 			var template = _.template("<% for(attr in attributes){%> <%-attr%>='<%-attributes[attr]%>' <%}%>");
 			return template({attributes:attrs});
 		}
+		/**
+		 * get attributes
+		 * @return {Object}
+		 */
 		getAttributes(){
 			var attrs = _.extend({},this.options.attributes);
 			attrs.name=this.name;
@@ -56,9 +64,15 @@ module widget{
 			attrs.type=utils.returnDefined(this.type,attrs.type);
 			return attrs;
 		}
+		/**
+		 * @param {Object} data
+		 */
 		setData(data){
 			this._data=data;
 		}
+		/**
+		 * @return {Object}
+		 */
 		getData(){
 			return this._data;
 		}
@@ -82,6 +96,9 @@ module widget{
 				,attributes:this.renderAttributes(this.getAttributes())
 			});
 		}
+		/**
+		 * @return {string}
+		 */
 		toString(){
 			return util.format("[object form.widget.%s]",this.type);
 		}
@@ -270,8 +287,13 @@ module form{
 	export class WidgetLoader implements IWidgetLoader{
 		getWidget(type:string,name:string,options):widget.Base{
 			switch(type){
+				case "checkgroup":
 				case "checkboxgroup":
 					return new widget.CheckboxGroup(name,options);
+				case "check":
+					return new widget.Check(name,options);
+				case "radio":
+					return new widget.Radio(name,options);
 				case "radiogroup":
 					return new widget.RadioGroup(name,options);
 				case "select":

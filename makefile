@@ -1,5 +1,5 @@
 test:
-	mocha
+	@node_modules/.bin/mocha
 	@make commit
 install:
 	npm install

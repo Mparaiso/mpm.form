@@ -1,6 +1,6 @@
 test:
 	mocha
-	@commit
+	@make commit
 install:
 	npm install
 commit:

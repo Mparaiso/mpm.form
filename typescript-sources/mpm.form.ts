@@ -18,37 +18,31 @@ module widget{
 		options;
 		type;
 		_data;
+		default;
 		toJSON():any;
 		toHTML();
+		toString();
 		getAttributes();
 		setData(_data);
 		getData();
+		resetData();
 	}
 	export class Base implements IBase{
 		options:any;
 		name;
 		_data;
+		default;
 		type="base";
 		template=_.template('<%=label%> <input <%=attributes%> />');
-		/**
-		 * @constructor
-		 * @param {String} name
-		 * @param {Object} options
-		 */
-		constructor(name,options:any={}){
+
+		constructor(name:string,options:any={}){
 			this.name=name;
 			this.options= _.extend({},options);
-			if(_.isUndefined(this.options['attributes'])){
-				this.options.attributes = {};
-			}
-			if(_.isUndefined(this.options['label'])){
-				this.options.label = this.name;
-			}			
+			this.options.attributes = this.options.attributes||{};
+			this.options.label = this.options.label||this.name;
+			this.default = this.options.default;
 		}
-		/**
-		 * render attributes
-		 * @type {[String]}
-		 */
+
 		renderAttributes(attrs:Object){
 			var template = _.template("<% for(attr in attributes){%> <%-attr%>='<%-attributes[attr]%>' <%}%>");
 			return template({attributes:attrs});
@@ -64,21 +58,13 @@ module widget{
 			attrs.type=utils.returnDefined(this.type,attrs.type);
 			return attrs;
 		}
-		/**
-		 * @param {Object} data
-		 */
+		resetData(){}
 		setData(data){
 			this._data=data;
 		}
-		/**
-		 * @return {Object}
-		 */
 		getData(){
 			return this._data;
 		}
-		/**
-		 * @return {Object}
-		 */
 		toJSON():any{
 			return {
 				options:this.options,
@@ -87,18 +73,12 @@ module widget{
 				data:this.getData()
 			};
 		}
-		/**
-		 * @return {String}
-		 */
 		toHTML(){
 			return this.template({
 				label:new Label(this.options.label,this.options.labelAttributes).toHTML()
 				,attributes:this.renderAttributes(this.getAttributes())
 			});
 		}
-		/**
-		 * @return {string}
-		 */
 		toString(){
 			return util.format("[object form.widget.%s]",this.type);
 		}
@@ -108,8 +88,25 @@ module widget{
 		type="text";
 	}
 	export class Check extends Text{
-		type="check";
+		type="checkbox";
 		template=_.template("<input <%=attributes%> /> <%=label %>");
+		getAttributes(){
+			var attrs= super.getAttributes();
+			return attrs;
+		}
+		setData(data){
+			this._data=data;
+			if(_.isUndefined(data)){
+				delete this.options.attributes.checked;
+			}else{
+				this.options.attributes.checked="checked";
+			}
+		}
+		getData(){
+			if(utils.isDefined(this.options.attributes.checked)){
+				return this._data;
+			}
+		}
 		static fromData(data){
 			var check = new Check(data.key,{attributes:data.attributes});
 			check.options.attributes.value = data.value;
@@ -193,7 +190,7 @@ module widget{
 				return o;
 			});
 		}
-		toJSON(){
+		toJSON():any{
 			var json:any = super.toJSON();
 			json.choices=this.choices;
 			json.data=this.getData();
@@ -202,7 +199,7 @@ module widget{
 	}
 	export class Select extends Choices{
 		type="select";
-		template=_.template("<select <%=attributes%> >\n<% _.each(options,function(o){print(o.toHTML());}) %></select>")
+		template=_.template("<label <%-labelAttrs%> ><%-label%></label><select <%=attributes%> >\n<% _.each(options,function(o){print(o.toHTML());}) %></select>")
 		getAttributes(){
 			var attrs=super.getAttributes();
 			delete attrs.type;
@@ -211,7 +208,9 @@ module widget{
 		}
 		toHTML(){
 			return this.template({
-				attributes:this.renderAttributes(this.getAttributes())
+				label:utils.returnDefined(this.options.label,this.name)
+				,labelAttrs:this.renderAttributes(this.options.labelAttributes||{})
+				,attributes:this.renderAttributes(this.getAttributes())
 				,options:this.choices.map(Option.fromData)
 			});
 		}
@@ -291,6 +290,7 @@ module form{
 				case "checkboxgroup":
 					return new widget.CheckboxGroup(name,options);
 				case "check":
+				case "checkbox":
 					return new widget.Check(name,options);
 				case "radio":
 					return new widget.Radio(name,options);
@@ -350,10 +350,8 @@ module form{
 		 */
 		setData(data){
 			var widget,key;
-			for(key in data){
-				widget = this.getByName(key);
-				if(widget) widget.setData(data[key]);
-				if(this._model) this._model[key] = data[key];
+			for(var i in this.widgets){
+					this.widgets[i].setData(data[this.widgets[i].name]);
 			}
 		}
 		getData(){

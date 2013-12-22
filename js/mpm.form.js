@@ -4,7 +4,6 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-
 var util = require('util');
 var _ = require('underscore');
 
@@ -30,28 +29,25 @@ var utils;
 var widget;
 (function (widget) {
     var Base = (function () {
-        /**
-        * @constructor
-        * @param {String} name
-        * @param {Object} options
-        */
         function Base(name, options) {
             if (typeof options === "undefined") { options = {}; }
             this.type = "base";
             this.template = _.template('<%=label%> <input <%=attributes%> />');
             this.name = name;
             this.options = _.extend({}, options);
-            if (_.isUndefined(this.options['attributes'])) {
-                this.options.attributes = {};
-            }
-            if (_.isUndefined(this.options['label'])) {
-                this.options.label = this.name;
-            }
+            this.options.attributes = this.options.attributes || {};
+            this.options.label = this.options.label || this.name;
+            this.default = this.options.default;
         }
         Base.prototype.renderAttributes = function (attrs) {
             var template = _.template("<% for(attr in attributes){%> <%-attr%>='<%-attributes[attr]%>' <%}%>");
             return template({ attributes: attrs });
         };
+
+        /**
+        * get attributes
+        * @return {Object}
+        */
         Base.prototype.getAttributes = function () {
             var attrs = _.extend({}, this.options.attributes);
             attrs.name = this.name;
@@ -59,16 +55,14 @@ var widget;
             attrs.type = utils.returnDefined(this.type, attrs.type);
             return attrs;
         };
+        Base.prototype.resetData = function () {
+        };
         Base.prototype.setData = function (data) {
             this._data = data;
         };
         Base.prototype.getData = function () {
             return this._data;
         };
-
-        /**
-        * @return {Object}
-        */
         Base.prototype.toJSON = function () {
             return {
                 options: this.options,
@@ -77,10 +71,6 @@ var widget;
                 data: this.getData()
             };
         };
-
-        /**
-        * @return {String}
-        */
         Base.prototype.toHTML = function () {
             return this.template({
                 label: new Label(this.options.label, this.options.labelAttributes).toHTML(),
@@ -107,9 +97,26 @@ var widget;
         __extends(Check, _super);
         function Check() {
             _super.apply(this, arguments);
-            this.type = "check";
+            this.type = "checkbox";
             this.template = _.template("<input <%=attributes%> /> <%=label %>");
         }
+        Check.prototype.getAttributes = function () {
+            var attrs = _super.prototype.getAttributes.call(this);
+            return attrs;
+        };
+        Check.prototype.setData = function (data) {
+            this._data = data;
+            if (_.isUndefined(data)) {
+                delete this.options.attributes.checked;
+            } else {
+                this.options.attributes.checked = "checked";
+            }
+        };
+        Check.prototype.getData = function () {
+            if (utils.isDefined(this.options.attributes.checked)) {
+                return this._data;
+            }
+        };
         Check.fromData = function (data) {
             var check = new Check(data.key, { attributes: data.attributes });
             check.options.attributes.value = data.value;
@@ -242,7 +249,7 @@ var widget;
         function Select() {
             _super.apply(this, arguments);
             this.type = "select";
-            this.template = _.template("<select <%=attributes%> >\n<% _.each(options,function(o){print(o.toHTML());}) %></select>");
+            this.template = _.template("<label <%-labelAttrs%> ><%-label%></label><select <%=attributes%> >\n<% _.each(options,function(o){print(o.toHTML());}) %></select>");
         }
         Select.prototype.getAttributes = function () {
             var attrs = _super.prototype.getAttributes.call(this);
@@ -252,6 +259,8 @@ var widget;
         };
         Select.prototype.toHTML = function () {
             return this.template({
+                label: utils.returnDefined(this.options.label, this.name),
+                labelAttrs: this.renderAttributes(this.options.labelAttributes || {}),
                 attributes: this.renderAttributes(this.getAttributes()),
                 options: this.choices.map(Option.fromData)
             });
@@ -359,6 +368,7 @@ var form;
                 case "checkboxgroup":
                     return new widget.CheckboxGroup(name, options);
                 case "check":
+                case "checkbox":
                     return new widget.Check(name, options);
                 case "radio":
                     return new widget.Radio(name, options);
@@ -430,12 +440,8 @@ var form;
         */
         FormBuilder.prototype.setData = function (data) {
             var widget, key;
-            for (key in data) {
-                widget = this.getByName(key);
-                if (widget)
-                    widget.setData(data[key]);
-                if (this._model)
-                    this._model[key] = data[key];
+            for (var i in this.widgets) {
+                this.widgets[i].setData(data[this.widgets[i].name]);
             }
         };
         FormBuilder.prototype.getData = function () {
@@ -455,7 +461,7 @@ var form;
     form.FormBuilder = FormBuilder;
     form.createFormBuilder = function () {
         var form = new FormBuilder();
-        form.addWidgetLoader(new WidgetLoader);
+        form.addWidgetLoader(new WidgetLoader());
         return form;
     };
 })(form || (form = {}));

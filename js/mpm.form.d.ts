@@ -1,6 +1,5 @@
-declare var require: any, module: any;
-declare var util: any;
-declare var _: any;
+declare var util;
+declare var _;
 declare module utils {
     var isDefined: (value: any) => boolean;
     var returnDefined: (...values: any[]) => any;
@@ -10,60 +9,61 @@ declare module utils {
 */
 declare module widget {
     interface IBase {
-        name: any;
-        options: any;
-        type: any;
-        _data: any;
+        name;
+        options;
+        type;
+        _data;
+        default;
         toJSON(): any;
-        toHTML(): any;
-        getAttributes(): any;
-        setData(_data: any): any;
-        getData(): any;
+        toHTML();
+        toString();
+        getAttributes();
+        setData(_data);
+        getData();
+        resetData();
     }
     class Base implements IBase {
         public options: any;
-        public name: any;
-        public _data: any;
+        public name;
+        public _data;
+        public default;
         public type: string;
-        public template: any;
+        public template;
+        constructor(name: string, options?: any);
+        public renderAttributes(attrs: Object);
         /**
-        * @constructor
-        * @param {String} name
-        * @param {Object} options
-        */
-        constructor(name: any, options?: any);
-        public renderAttributes(attrs: Object): any;
-        public getAttributes(): any;
-        public setData(data: any): void;
-        public getData(): any;
-        /**
+        * get attributes
         * @return {Object}
         */
+        public getAttributes();
+        public resetData(): void;
+        public setData(data): void;
+        public getData();
         public toJSON(): any;
-        /**
-        * @return {String}
-        */
-        public toHTML(): any;
-        public toString(): any;
+        public toHTML();
+        public toString();
     }
     class Text extends Base {
         public type: string;
     }
     class Check extends Text {
         public type: string;
-        public template: any;
-        static fromData(data: any): Check;
+        public template;
+        public getAttributes();
+        public setData(data): void;
+        public getData();
+        static fromData(data): Check;
     }
     class Label extends Base {
         public type: string;
-        public template: any;
+        public template;
         public defaults: {};
-        public getAttributes(): any;
-        public toHTML(): any;
+        public getAttributes();
+        public toHTML();
     }
     class Radio extends Text {
         public type: string;
-        static fromData(data: any): Radio;
+        static fromData(data): Radio;
     }
     class Button extends Text {
         public type: string;
@@ -73,74 +73,74 @@ declare module widget {
     }
     class Option extends Base {
         public type: string;
-        public template: any;
+        public template;
         /**
         * @return {String}
         */
-        public toHTML(): any;
-        static fromData(data: any): Option;
+        public toHTML();
+        static fromData(data): Option;
     }
     interface Choice {
         key: string;
-        value: any;
-        attributes: any;
+        value;
+        attributes;
     }
     class Choices extends Base {
         public type: string;
-        public _choices: any;
-        constructor(name: any, options: any);
+        public _choices;
+        constructor(name, options);
         public choices : any;
-        public normaLizeChoices(choices: any): any;
+        public normaLizeChoices(choices);
         public toJSON(): any;
     }
     class Select extends Choices {
         public type: string;
-        public template: any;
-        public getAttributes(): any;
-        public toHTML(): any;
+        public template;
+        public getAttributes();
+        public toHTML();
         public setData(data: any[]): void;
-        public getData(): any;
+        public getData();
     }
     class CheckboxGroup extends Choices {
         public type: string;
-        public toHTML(): any;
-        public setData(data: any): void;
-        public getData(): any;
+        public toHTML();
+        public setData(data): void;
+        public getData();
     }
     class RadioGroup extends Choices {
         public type: string;
-        public toHTML(): any;
-        public setData(data: any): void;
-        public getData(): any;
+        public toHTML();
+        public setData(data): void;
+        public getData();
     }
 }
 declare module form {
     interface IWidgetLoader {
-        getWidget(type: any, name: any, options: any): widget.Base;
+        getWidget(type, name, options): widget.Base;
     }
     class WidgetLoader implements IWidgetLoader {
-        public getWidget(type: string, name: string, options: any): widget.Base;
+        public getWidget(type: string, name: string, options): widget.Base;
     }
     class FormBuilder {
         public _model: any;
         public widgets: widget.Base[];
         public widgetLoaders: IWidgetLoader[];
         public name: string;
-        public addWidgetLoader(widgetLoader: any): void;
-        public resolveWidget(type: any, name: any, options: any): any;
+        public addWidgetLoader(widgetLoader): void;
+        public resolveWidget(type, name, options);
         public bound: boolean;
-        public add(type: any, name: any, options: any): FormBuilder;
-        public toHTML(iterator: any): string;
-        public toJSON(): {}[];
-        public setModel(value: any): void;
-        public getModel(): any;
+        public add(type, name, options): FormBuilder;
+        public toHTML(iterator): string;
+        public toJSON(): any[];
+        public setModel(value): void;
+        public getModel();
         /**
         * @chainable
         * @param {Object} data
         */
-        public setData(data: any): void;
+        public setData(data): void;
         public getData(): {};
-        public getByName(name: any): widget.Base;
+        public getByName(name): widget.Base;
     }
     var createFormBuilder: () => FormBuilder;
 }

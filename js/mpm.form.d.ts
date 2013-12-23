@@ -4,9 +4,16 @@ declare module utils {
     var isDefined: (value: any) => boolean;
     var returnDefined: (...values: any[]) => any;
 }
-/**
-* @namespace
-*/
+declare module validation {
+    interface IValidator {
+        validate();
+    }
+    class DummyValidator {
+        public validate(): boolean;
+    }
+}
+declare module translation {
+}
 declare module widget {
     interface IBase {
         name;
@@ -21,6 +28,8 @@ declare module widget {
         setData(_data);
         getData();
         resetData();
+        processData();
+        validate();
     }
     class Base implements IBase {
         public options: any;
@@ -39,6 +48,8 @@ declare module widget {
         public resetData(): void;
         public setData(data): void;
         public getData();
+        public validate(): void;
+        public processData(): void;
         public toJSON(): any;
         public toHTML();
         public toString();

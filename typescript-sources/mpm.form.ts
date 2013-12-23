@@ -9,9 +9,21 @@ module utils{
 	export var returnDefined =(...values)=>_.find(values,(value)=>isDefined(value));
 }
 
-/**
- * @namespace
- */
+module validation{
+	export interface IValidator{
+		validate();
+	}
+	export class DummyValidator{
+		validate(){
+			return true;
+		}
+	}
+}
+
+module translation{
+
+}
+
 module widget{
 	export interface IBase{
 		name;
@@ -26,6 +38,8 @@ module widget{
 		setData(_data);
 		getData();
 		resetData();
+		processData();
+		validate();
 	}
 	export class Base implements IBase{
 		options:any;
@@ -65,6 +79,8 @@ module widget{
 		getData(){
 			return this._data;
 		}
+		validate(){}
+		processData(){}
 		toJSON():any{
 			return {
 				options:this.options,

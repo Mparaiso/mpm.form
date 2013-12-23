@@ -23,9 +23,19 @@ var utils;
     };
 })(utils || (utils = {}));
 
-/**
-* @namespace
-*/
+var validation;
+(function (validation) {
+    var DummyValidator = (function () {
+        function DummyValidator() {
+        }
+        DummyValidator.prototype.validate = function () {
+            return true;
+        };
+        return DummyValidator;
+    })();
+    validation.DummyValidator = DummyValidator;
+})(validation || (validation = {}));
+
 var widget;
 (function (widget) {
     var Base = (function () {
@@ -62,6 +72,10 @@ var widget;
         };
         Base.prototype.getData = function () {
             return this._data;
+        };
+        Base.prototype.validate = function () {
+        };
+        Base.prototype.processData = function () {
         };
         Base.prototype.toJSON = function () {
             return {

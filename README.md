@@ -40,7 +40,7 @@ A form library for node.js
 ```
 
 Result : 
-```html
+
 	&lt;label  &gt;firstname&lt;/label&gt; &lt;input  name=&apos;firstname&apos;  value=&apos;Marc&apos;  type=&apos;text&apos;  /&gt;
 	&lt;label  &gt;lastname&lt;/label&gt; &lt;input  name=&apos;lastname&apos;  value=&apos;Prades&apos;  type=&apos;text&apos;  /&gt;
 	&lt;select  required=&apos;true&apos;  name=&apos;gender&apos;  &gt;
@@ -51,4 +51,3 @@ Result :
 	&lt;input  checked=&apos;checked&apos;  value=&apos;tech&apos;  name=&apos;tech&apos;  type=&apos;check&apos;  /&gt; &lt;label  &gt;tech&lt;/label&gt;
 	&lt;input  value=&apos;politics&apos;  name=&apos;politics&apos;  type=&apos;check&apos;  /&gt; &lt;label  &gt;politics&lt;/label&gt;
 	&lt;label  &gt;submit&lt;/label&gt; &lt;input  value=&apos;submit&apos;  name=&apos;submit&apos;  type=&apos;submit&apos;  /&gt;
-```

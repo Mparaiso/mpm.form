@@ -40,14 +40,17 @@ A form library for node.js
 ```
 
 Result : 
-
-	&lt;label  &gt;firstname&lt;/label&gt; &lt;input  name=&apos;firstname&apos;  value=&apos;Marc&apos;  type=&apos;text&apos;  /&gt;
-	&lt;label  &gt;lastname&lt;/label&gt; &lt;input  name=&apos;lastname&apos;  value=&apos;Prades&apos;  type=&apos;text&apos;  /&gt;
-	&lt;select  required=&apos;true&apos;  name=&apos;gender&apos;  &gt;
-	&lt;option  selected=&apos;selected&apos;  value=&apos;0&apos;  name=&apos;male&apos;  type=&apos;option&apos;  &gt;male&lt;/option&gt;
-	&lt;option  value=&apos;1&apos;  name=&apos;female&apos;  type=&apos;option&apos;  &gt;female&lt;/option&gt;
-	&lt;option  value=&apos;2&apos;  name=&apos;other&apos;  type=&apos;option&apos;  &gt;other&lt;/option&gt;
-	&lt;/select&gt;
-	&lt;input  checked=&apos;checked&apos;  value=&apos;tech&apos;  name=&apos;tech&apos;  type=&apos;check&apos;  /&gt; &lt;label  &gt;tech&lt;/label&gt;
-	&lt;input  value=&apos;politics&apos;  name=&apos;politics&apos;  type=&apos;check&apos;  /&gt; &lt;label  &gt;politics&lt;/label&gt;
-	&lt;label  &gt;submit&lt;/label&gt; &lt;input  value=&apos;submit&apos;  name=&apos;submit&apos;  type=&apos;submit&apos;  /&gt;
+<code>
+```html
+	<label  >firstname</label> <input  name='firstname'  value='Marc'  type='text'  />
+	<label  >lastname</label> <input  name='lastname'  value='Prades'  type='text'  />
+	<select  required='true'  name='gender'  >
+	<option  selected='selected'  value='0'  name='male'  type='option'  >male</option>
+	<option  value='1'  name='female'  type='option'  >female</option>
+	<option  value='2'  name='other'  type='option'  >other</option>
+	</select>
+	<input  checked='checked'  value='tech'  name='tech'  type='check'  /> <label  >tech</label>
+	<input  value='politics'  name='politics'  type='check'  /> <label  >politics</label>
+	<label  >submit</label> <input  value='submit'  name='submit'  type='submit'  />
+```
+</code>

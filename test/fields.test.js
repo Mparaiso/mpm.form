@@ -57,6 +57,7 @@ describe('form.fields', function () {
             expect(html).to.contain('checked');
             expect(html).to.contain('tos');
             expect(html).to.contain('check');
+            expect(html).to.contain('input');
         });
         it('should not be checked',function(){
             check.setData();

@@ -41,7 +41,15 @@ describe('form.fields', function () {
         });
     });
     describe('.Check',function(){
-        var check=new fields.Check("tos",{attributes:{required:true},default:"checked"});
+        var label="I agree with the terms of use";
+        var check=new fields.Check("tos",{
+                attributes:{
+                    required:true,
+                    checked:"checked",
+                    value:"tos"
+                },
+                label:label
+            });
 
     });
     describe('.RadioGroup', function () {

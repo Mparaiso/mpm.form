@@ -12,7 +12,6 @@ A form library for node.js
 ```javascript
 	require('source-map-support').install();
 	var forms = require('mpm.form');
-
 	var gender_options = ['male','female','other'];
 	var subject_options=[
 		{key:"tech",value:"tech"},{key:"politics",value:"politics"}

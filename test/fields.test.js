@@ -45,12 +45,11 @@ describe('form.fields', function () {
         var check=new fields.Check("tos",{
                 attributes:{
                     required:true,
-                    checked:"checked",
-                    value:"tos"
                 },
-                label:label
+                label:label,
+                default:"tos"
             });
-
+        assert.equal(check.getData(),"tos");
     });
     describe('.RadioGroup', function () {
         var options = {

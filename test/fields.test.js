@@ -13,8 +13,7 @@ describe('form.fields',function(){
         var radioGroup = new fields.RadioGroup("gender",options);
         radioGroup.setData('male');
         var html = radioGroup.toHTML();
-        console.log(html);
-        console.log(sys.inspect(radioGroup.toJSON(),{depth:5}));
         expect(html).to.contain('male');
+        expect(radioGroup).to.contai('checked');
     });
 });

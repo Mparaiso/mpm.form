@@ -29,6 +29,17 @@ describe('form.fields', function () {
             expect(text.toHTML()).to.contain('text');
         });
     });
+    describe('.Hidden',function(){
+        var csrf="334svs4F34fdFDdfdf34";
+        var text=new fields.Text("csrf",{attributes:{required:true,value:csrf}});
+        it('data should be '+csrf,function(){
+            assert.equal(text.getData(),csrf);
+        });
+        it('should be well formed',function(){
+            expect(text.toHTML()).to.contain('hidden');
+            expect(text.toHTML()).to.contain(csrf);
+        });
+    });
     describe('.RadioGroup', function () {
         var options = {
             choices: ['male', 'female', 'other'],

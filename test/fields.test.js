@@ -13,6 +13,9 @@ describe('form.fields', function () {
         it('data should be ' + firstname, function () {
             assert.equal(base.getData(), firstname);
         });
+        it('should be well formed',function(){
+            expect(base.toHTML()).to.contain('input');
+        });
     });
     describe('.RadioGroup', function () {
         var options = {

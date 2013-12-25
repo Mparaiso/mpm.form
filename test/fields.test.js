@@ -44,13 +44,19 @@ describe('form.fields', function () {
         var label="I agree with the terms of use";
         var check=new fields.Check("tos",{
                 attributes:{
-                    required:true,
+                    required:true
                 },
                 label:label,
                 default:"tos"
             });
         it('should be checked',function(){
             assert.equal(check.getData(),"tos");
+        });
+        it('should be well formed',function(){
+            var html=check.toHTML();
+            expect(html).to.contain('checked');
+            expect(html).to.contain('tos');
+            expect(html).to.contain('check');
         });
         it('should not be checked',function(){
             check.setData();

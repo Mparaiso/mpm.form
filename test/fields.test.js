@@ -15,5 +15,6 @@ describe('form.fields',function(){
         var html = radioGroup.toHTML();
         expect(html).to.contain('male');
         expect(html).to.contain('checked');
+        expect(radioGroup.choices[0].attributes.checked).to.be('checked');
     });
 });

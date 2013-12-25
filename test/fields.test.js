@@ -13,6 +13,7 @@ describe('form.fields',function(){
         radioGroup.setData('male');
         var html = radioGroup.toHTML();
         console.log(html);
+        console.log(radioGroup.toJSON());
         expect(html).to.contain('male');
     });
 });

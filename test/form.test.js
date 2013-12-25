@@ -11,27 +11,27 @@ describe('FORM',function(){
 		required:"true",
 		class:"input-small"
 	};
-	describe("form.widget.Base",function(){
-		var base = new forms.widget.Base("base",{'attributes':attributes});
+	describe("form.fields.Base",function(){
+		var base = new forms.fields.Base("base",{'attributes':attributes});
 		var html = base.toHTML();
 		it('should render properly',function(){
 			expect(html).to.contain("value");
 		});
 	});
-	describe("form.widget.Text",function(){
-		var text= new forms.widget.Text("address",{'attributes':attributes});
+	describe("form.fields.Text",function(){
+		var text= new forms.fields.Text("address",{'attributes':attributes});
 		text.setData("London");
 		it('should render properly',function(){
 			expect(text.toHTML()).to.contain(text.getData());
 		});
 	});
-	describe("form.widget.Select",function(){
-		describe('A select widget with a simple data list',function(){
+	describe("form.fields.Select",function(){
+		describe('A select fields with a simple data list',function(){
 			var attrs = {
 				required:true
 			};
 			var options = ['London','Paris','Moscow','Zurich'];
-			var select = new forms.widget.Select("towns",{attributes:attrs,choices:options});
+			var select = new forms.fields.Select("towns",{attributes:attrs,choices:options});
 			var html = select.toHTML();
 			it('should contain a select tag',function(){
 				expect(html).to.contain("select");
@@ -48,13 +48,13 @@ describe('FORM',function(){
 				});
 			});
 		});
-		describe('A select widget with a complex data list',function(){
+		describe('A select fields with a complex data list',function(){
 			var options=[
 				{key:"male",value:"m"},
 				{key:'female',value:'f'},
 				{key:'other',value:'o'}
 			];
-			var select = new forms.widget.Select('sex',{choices:options,attributes:{required:'true'}});
+			var select = new forms.fields.Select('sex',{choices:options,attributes:{required:'true'}});
 			var html = select.toHTML();
 			var json = select.toJSON();
 			it('should render properly',function(){

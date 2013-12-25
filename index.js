@@ -1,3 +1,7 @@
 require('source-map-support').install();
 
-module.exports = require('./js/mpm.form');
+module.exports = {
+    form:require('./lib/form'),
+    fields:require('./lib/fields'),
+    utils:require('./lib/utils')
+};

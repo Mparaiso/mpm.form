@@ -17,6 +17,18 @@ describe('form.fields', function () {
             expect(base.toHTML()).to.contain('input');
         });
     });
+    describe('.Text',function(){
+        var lastname="Doe";
+        var text=new fields.Text("lastname",{attributes:{required:true}});
+        text.setData(lastname);
+        it('data should be '+lastname,function(){
+            assert.equal(text.getData(),lastname);
+        });
+        it('should be well formed',function(){
+            expect(text.toHTML()).to.contain('required');
+            expect(text.toHTML()).to.contain('text');
+        });
+    });
     describe('.RadioGroup', function () {
         var options = {
             choices: ['male', 'female', 'other'],

@@ -49,7 +49,13 @@ describe('form.fields', function () {
                 label:label,
                 default:"tos"
             });
-        assert.equal(check.getData(),"tos");
+        it('should be checked',function(){
+            assert.equal(check.getData(),"tos");
+        });
+        it('should not be checked',function(){
+            check.setData();
+            assert.equal(check.getData(),undefined);
+        });
     });
     describe('.RadioGroup', function () {
         var options = {

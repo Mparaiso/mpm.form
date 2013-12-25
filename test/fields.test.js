@@ -3,6 +3,7 @@
 var chai=require('chai');
 var expect=chai.expect;
 var fields = require('../index').fields;
+var sys=require('sys');
 describe('form.fields',function(){
     describe('.RadioGroup',function(){
         var options ={
@@ -13,7 +14,7 @@ describe('form.fields',function(){
         radioGroup.setData('male');
         var html = radioGroup.toHTML();
         console.log(html);
-        console.log(radioGroup.toJSON());
+        console.log(sys.inspect(radioGroup.toJSON(),{depth:5}));
         expect(html).to.contain('male');
     });
 });

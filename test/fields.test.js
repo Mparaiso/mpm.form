@@ -13,9 +13,12 @@ describe('form.fields', function () {
         var radioGroup = new fields.RadioGroup("gender", options);
         radioGroup.setData('male');
         var html = radioGroup.toHTML();
-        it('male chould be checked', function () {
+        it('should be well formed', function () {
             expect(html).to.contain('male');
             expect(html).to.contain('checked');
+        });
+        it('male chould be checked', function () {
+
             expect(radioGroup.getChoices()[0].attributes.checked).to.equal('checked');
         });
     });

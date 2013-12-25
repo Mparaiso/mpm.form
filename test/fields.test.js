@@ -40,6 +40,10 @@ describe('form.fields', function () {
             expect(hidden.toHTML()).to.contain(csrf);
         });
     });
+    describe('.Check',function(){
+        var check=new fields.Check("tos",{attributes:{required:true},default:"checked"});
+
+    });
     describe('.RadioGroup', function () {
         var options = {
             choices: ['male', 'female', 'other'],

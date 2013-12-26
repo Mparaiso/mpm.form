@@ -27,7 +27,6 @@ describe('form', function () {
         it('should validate', function (done) {
             this.form.setData(this.data);
             this.form.validate(function(err,result){
-                console.log(arguments);
                 assert(result);
                 assert(err===undefined);
                 done();

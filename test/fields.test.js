@@ -97,4 +97,10 @@ describe('form.fields', function () {
             expect(radioGroup.getChoices()[0].attributes.checked).to.equal('checked');
         });
     });
+    describe('.TextArea',function(){
+        var field=new fields.TextArea('description');
+        it('should be a textarea',function(){
+            assert.equal(field.type,'textarea');
+        })
+    });
 });

@@ -1,6 +1,8 @@
 mpm.form
 ========
 
+[![Build Status](https://travis-ci.org/Mparaiso/mpm.form.png?branch=master)](https://travis-ci.org/Mparaiso/mpm.form)
+
 version: 0.0.1
 
 author: mparaiso <mparaiso@online.fr>

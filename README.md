@@ -40,18 +40,3 @@ A form library for node.js
 	console.log(form.toJSON());
 ```
 
-Result : 
-<code>
-```html
-	<label  >firstname</label> <input  name='firstname'  value='Marc'  type='text'  />
-	<label  >lastname</label> <input  name='lastname'  value='Prades'  type='text'  />
-	<select  required='true'  name='gender'  >
-	<option  selected='selected'  value='0'  name='male'  type='option'  >male</option>
-	<option  value='1'  name='female'  type='option'  >female</option>
-	<option  value='2'  name='other'  type='option'  >other</option>
-	</select>
-	<input  checked='checked'  value='tech'  name='tech'  type='check'  /> <label  >tech</label>
-	<input  value='politics'  name='politics'  type='check'  /> <label  >politics</label>
-	<label  >submit</label> <input  value='submit'  name='submit'  type='submit'  />
-```
-</code>

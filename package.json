@@ -1,7 +1,7 @@
 {
   "name": "mpm.form",
-  "version": "0.0.12",
-  "description": "Form library",
+  "version": "0.0.13",
+  "description": "Form library from the web",
   "main": "index.js",
   "scripts": {
     "test": "mocha"

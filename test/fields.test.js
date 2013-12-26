@@ -105,6 +105,8 @@ describe('form.fields', function () {
         it('should render properly',function(){
             field.setData('foo');
             expect(field.toHTML()).to.contain('foo');
+            expect(field.toHTML()).to.contain('textarea');
+            expect(field.toHTML()).to.contain('description');
         });
     });
 });

@@ -1,21 +1,38 @@
-/*global describe,it*/
+/*global describe,it,beforeEach*/
 "use strict";
 var chai = require('chai');
 var expect = chai.expect;
 var assert = require('assert');
 var fields = require('../index').fields;
-var sys = require('sys');
+var validation = require('mpm.validation');
+
 describe('form.fields', function () {
     describe(".Base", function () {
-        var firstname = "john";
-        var base = new fields.Base('firstname');
-        base.setData(firstname);
-        it('data should be ' + firstname, function () {
-            assert.equal(base.getData(), firstname);
+        beforeEach(function(){
+            this.base = new fields.Base('email');
+            this.validators =[validation.Email(),validation.Regexp(/online\.fr/),validation.MinLength(15)];
         });
-        it('should be well formed',function(){
-            expect(base.toHTML()).to.contain('input');
+        it('should validate',function(done){
+            this.base.getOptions().validators=this.validators;
+            this.base.setData('mparaiso@online.fr');
+            this.base.validate(function(err,result){
+                assert(result);
+                done();
+            });
         });
+        it('should not validate',function(done){
+            var self=this;
+            this.base.getOptions().validators=this.validators;
+            this.base.setData('bogus@web.io');
+            this.base.validate(function(err,result){
+                assert(!result);
+                assert(err instanceof Error);
+                assert(self.base.hasError());
+                console.log(err.message);
+                done();
+            });
+        });
+
     });
     describe('.Text',function(){
         var lastname="Doe";

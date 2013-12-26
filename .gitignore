@@ -1,0 +1,7 @@
+node_modules
+.idea
+temp
+trash
+*.sublime-project
+*.sublime-workspace
+source

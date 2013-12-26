@@ -102,5 +102,9 @@ describe('form.fields', function () {
         it('should be a textarea',function(){
             assert.equal(field.type,'textarea');
         })
+        it('should render properly',function(){
+            field.setData('foo');
+            expect(field.toHTML()).to.contain('foo');
+        });
     });
 });

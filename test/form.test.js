@@ -1,6 +1,5 @@
 /*global describe,it,beforeEach */
 "use strict";
-require('source-map-support').install();
 var expect = require('chai').expect;
 var assert = require('assert');
 var forms = require('../index')

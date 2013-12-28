@@ -12,9 +12,7 @@
   },
   "devDependencies":{
     "mocha":"*",
-    "chai":"*",
-    "source-map-support":"*",
-    "typescript":"*"
+    "chai":"*"
   },
   "repository": {
     "type": "git",

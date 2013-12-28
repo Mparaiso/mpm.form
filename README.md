@@ -32,7 +32,7 @@ in package.json file :
 	validation = require('mpm.form').validation;
 
 	// FormBuilder.add(fieldtype,fieldname,fieldoptions)
-	var postForm = form.createBuilder("post_form")
+	var postForm = form.createBuilder("post_form"/*the form name*/)
         .add('text', 'title', {
             validators: [validation.Required(), validation.Length(3, 200)]})
         .add('textarea', 'excerpt', {attributes: {rows: 3},
@@ -50,6 +50,7 @@ in package.json file :
     //and support your own templating engine 
     //get all datas with : 
     postForm.toJSON();
+    // you can then write your own helpers to render the form
 
     //we want our form to have initial datas and bind a model 
     //(from the a database for instance )
@@ -68,8 +69,9 @@ in package.json file :
 		...
     });
     ///result will be true if the form is valid
-    ///to form get errors
-    postForm.getErrors();
+    ///to get form errors
+    postForm.getErrors(); 
+    //will yield an array of Error objects
     ///if the form is valid ,we can save the model to the db
     model.save(callback)
 

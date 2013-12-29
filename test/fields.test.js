@@ -34,16 +34,16 @@ describe('form.fields', function () {
         });
 
     });
-    describe('.Text',function(){
-        var lastname="Doe";
-        var text=new fields.Text("lastname",{attributes:{required:true}});
-        text.setData(lastname);
-        it('data should be '+lastname,function(){
-            assert.equal(text.getData(),lastname);
+    describe('.Date',function(){
+        var birthday="1979-10-02";
+        var text=new fields.Date("birthday",{attributes:{required:true}});
+        text.setData(birthday);
+        it('data should be '+birthday,function(){
+            assert.equal(text.getData(),birthday);
         });
         it('should be well formed',function(){
             expect(text.toHTML()).to.contain('required');
-            expect(text.toHTML()).to.contain('text');
+            expect(text.toHTML()).to.contain('date');
         });
     });
     describe('.Hidden',function(){

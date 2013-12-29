@@ -16,6 +16,10 @@ With __mpm.form__ , js developpers no longer need to write their forms and valid
 mpm.form handles form creation , request and model binding ,  validation and html rendering of
 form widgets.
 
+####ChangeLog
+
+- 0.0.17 formBuilder.add arguments are now (name,formType,options) instead of (formType,name,options)
+
 ####INSTALLATION
 
 in package.json file : 

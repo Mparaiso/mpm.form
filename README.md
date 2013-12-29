@@ -32,7 +32,7 @@ in package.json file :
 	 * Let's create a form for posts
 	 */
 	var form = require('mpm.form').form;
-	validation = require('mpm.form').validation;
+	var validation = require('mpm.form').validation;
 
 	// FormBuilder.add(fieldtype,fieldname,fieldoptions)
 	var postForm = form.createBuilder("post_form"/*the form name*/)

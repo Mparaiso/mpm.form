@@ -10,11 +10,10 @@ describe('form', function () {
         beforeEach(function () {
             this.genders = ['male', 'female', 'other'];
             this.form = form.createBuilder();
-            this.form.add('text', 'firstname', {validators: [validation.Required(), validation.Length(3, 50)]});
-            this.form.add('text', 'lastname', {validators: [validation.Required(), validation.Length(3, 50)]});
+            this.form.add('firstname','text',  {validators: [validation.Required(), validation.Length(3, 50)]});
+            this.form.add('lastname','text',  {validators: [validation.Required(), validation.Length(3, 50)]});
             this.form.add('password', 'password', {validators: [validation.Required(), validation.Length(5, 50)]});
-            this.form.add('password', 'password_repeat', {validators: [validation.Required(), validation.Length(5, 50)]});
-            this.form.add('radiogroup', 'gender', {choices: this.genders, validators: [validation.Required()]});
+            this.form.add( 'gender','radiogroup', {choices: this.genders, validators: [validation.Required()]});
             this.data = {
                 firstname: "john",
                 lastname: "doe",

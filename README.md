@@ -6,7 +6,7 @@ mpm.form
 
 [![Build Status](https://travis-ci.org/Mparaiso/mpm.form.png?branch=master)](https://travis-ci.org/Mparaiso/mpm.form)
 
-version: 0.0.16
+version: 0.0.17
 
 author: mparaiso <mparaiso@online.fr>
 
@@ -34,17 +34,17 @@ in package.json file :
 	var form = require('mpm.form').form;
 	var validation = require('mpm.form').validation;
 
-	// FormBuilder.add(fieldtype,fieldname,fieldoptions)
+	// FormBuilder.add(fieldname,fieldtype,fieldoptions)
 	var postForm = form.createBuilder("post_form"/*the form name*/)
-        .add('text', 'title', {
+        .add('title', 'text', {
             validators: [validation.Required(), validation.Length(3, 200)]})
-        .add('textarea', 'excerpt', {attributes: {rows: 3},
+        .add('excerpt', 'textarea', {attributes: {rows: 3},
             validators: validation.Required()})
-        .add('textarea', 'content', {attributes: {rows: 10},
+        .add('content', 'textarea', {attributes: {rows: 10},
             validators: validation.Required()})
-        .add("checkbox",'allow_comments',{label:'allow comments',attributes:{value:"allow_comments"}})
+        .add("allow_comments",'checkbox',{label:'allow comments',attributes:{value:"allow_comments"}})
         .add('reset', 'reset', {attributes: {value: 'reset'}})
-        .add('submit', 'create', {attributes: {value: 'create'}, validators: validation.Required()});
+        .add('create', 'submit', {attributes: {value: 'create'}, validators: validation.Required()});
         
     //to render the fields as HTML , just call : 
     postForm.toHTML();

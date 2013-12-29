@@ -28,7 +28,6 @@ describe('form.fields', function () {
                 assert(!result);
                 assert(err instanceof Error);
                 assert(self.base.hasError());
-                console.log(err.message);
                 done();
             });
         });

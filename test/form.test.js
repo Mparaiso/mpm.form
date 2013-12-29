@@ -3,28 +3,58 @@
 var expect = require('chai').expect;
 var assert = require('assert');
 var forms = require('../index')
+    , fields = forms.fields
     , validation = forms.validation
     , form = forms.form;
+describe('form',function(){
+    describe('loaders.FieldTypeLoader',function(){
+        var loader = new form.loaders.FieldTypeLoader();
+        it('should load forms.fields.Email ',function(done){
+            var email=loader.load('email',fields.Email,{validators:[validation.Required()]});
+            assert.ok(email instanceof fields.Email);
+            assert.ok(email.validate);
+            assert.ok(email.setData);
+            email.validate(function(err,result){
+                assert(err instanceof Error);
+                expect(err.message).to.contain('email','required');
+                done();
+            });
+        });
+    });
+});
 describe('form', function () {
     describe('.FormBuilder', function () {
         beforeEach(function () {
             this.genders = ['male', 'female', 'other'];
-            this.form = form.createBuilder();
-            this.form.add('firstname','text',  {validators: [validation.Required(), validation.Length(3, 50)]});
-            this.form.add('lastname','text',  {validators: [validation.Required(), validation.Length(3, 50)]});
-            this.form.add('password', 'password', {validators: [validation.Required(), validation.Length(5, 50)]});
-            this.form.add( 'gender','radiogroup', {choices: this.genders, validators: [validation.Required()]});
+            this.form = form.createBuilder()
+                .add('firstname','text',  {validators: [validation.Required(), validation.Length(3, 50)]})
+                .add('lastname','text',  {validators: [validation.Required(), validation.Length(3, 50)]})
+                .add('birthday','date',{validators:[validation.Required()]})
+                .add('email','email',{validators:[validation.Required(),validation.Email()]})
+                .add('password', 'password', {validators: [validation.Required(), validation.Length(5, 50)]})
+                .add( 'gender','radiogroup', {choices: this.genders, validators: [validation.Required()]});
+            
             this.data = {
                 firstname: "john",
                 lastname: "doe",
+                birthday:"1979-10-02",
+                email:"mparaiso@online.fr",
                 password: "password",
-                password_repeat: "password",
                 gender: 'male'
             };
         });
+        it('should have an  field name email',function(){
+            assert(this.form.getByName('email'));
+        });
         it('should validate', function (done) {
+            var self=this;
             this.form.setData(this.data);
             this.form.validate(function(err,result){
+                if(err){
+                    err.forEach(function(err){
+                        console.log(err.message);
+                    });
+                }
                 assert(result);
                 assert(err===undefined);
                 done();

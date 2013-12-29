@@ -6,7 +6,7 @@ mpm.form
 
 [![Build Status](https://travis-ci.org/Mparaiso/mpm.form.png?branch=master)](https://travis-ci.org/Mparaiso/mpm.form)
 
-version: 0.0.17
+version: 0.0.20
 
 author: mparaiso <mparaiso@online.fr>
 
@@ -17,6 +17,7 @@ mpm.form handles form creation , request and model binding ,  validation and htm
 form widgets.
 
 ####ChangeLog
+- 0.0.20 added fields.Email
 - 0.0.19 fields.Date && fields.Time added
 - 0.0.17 formBuilder.add arguments are now (name,formType,options) instead of (formType,name,options)
 

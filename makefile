@@ -1,6 +1,5 @@
 test:
 	@node_modules/.bin/mocha
-	@make commit
 #continuous testing
 ct:
 	@bin/ct.sh

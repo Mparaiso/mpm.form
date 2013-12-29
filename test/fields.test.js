@@ -46,6 +46,18 @@ describe('form.fields', function () {
             expect(text.toHTML()).to.contain('date');
         });
     });
+    describe('.Time',function(){
+        var lunch="12:00";
+        var text=new fields.Time("lunch",{attributes:{required:true}});
+        text.setData(lunch);
+        it('data should be '+lunch,function(){
+            assert.equal(text.getData(),lunch);
+        });
+        it('should be well formed',function(){
+            expect(text.toHTML()).to.contain('required');
+            expect(text.toHTML()).to.contain('time');
+        });
+    });
     describe('.Hidden',function(){
         var csrf="334svs4F34fdFDdfdf34";
         var hidden=new fields.Hidden("csrf",{attributes:{required:true},default:csrf});

@@ -17,8 +17,9 @@ mpm.form handles form creation , request and model binding ,  validation and htm
 form widgets.
 
 ####ChangeLog
-
+- 0.0.19 fields.Date && fields.Time added
 - 0.0.17 formBuilder.add arguments are now (name,formType,options) instead of (formType,name,options)
+
 
 ####INSTALLATION
 
@@ -87,6 +88,8 @@ in package.json file :
 ####SUPPORTED FIELDS
 
 - text: input of type text
+- date: input of type date
+- time: input of type time
 - password: input of type password
 - hidden: input of type hidden
 - checkbox: input of type check

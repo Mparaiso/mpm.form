@@ -1,7 +1,6 @@
+form = require('./js/form')
+form.fields = require('./js/fields')
+form.utils = require('./js/utils')
+form.validation = require('mpm.validation')
 
-module.exports = {
-    form:require('./js/form'),
-    fields:require('./js/fields'),
-    utils:require('./js/utils'),
-    validation:require('mpm.validation')
-};
+module.exports = form

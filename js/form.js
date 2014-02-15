@@ -25,6 +25,8 @@ form.loaders.FieldLoader =function(){};
  */
 form.loaders.FieldLoader.prototype.load = function (name,type,options) {
     switch (type) {
+        case "text":
+            return new fields.Text(name,options);
         case "email":
             return new fields.Email(name, options);
         case "date":
@@ -110,7 +112,7 @@ form.FormBuilder.prototype.addFieldLoader = function (fieldLoader) {
 form.FormBuilder.prototype.resolveField = function (name, type, options) {
     var i = 0, field;
     while ( !field && i < this.fieldLoaders.length) {
-        field = this.fieldLoaders[i].load(type, name, options);
+        field = this.fieldLoaders[i].load(name, type, options);
         i += 1;
     }
     if(field){return field;}
@@ -127,10 +129,10 @@ form.FormBuilder.prototype.add = function (name,type,options) {
     if (name instanceof fields.Base) {
         _field = name;
     } else {
-        _field = this.resolveField(name,type , options);
+        _field = this.resolveField(name,type,options);
     }
     if(_field){
-        _field.getOptions().attributes.id = this.getPrefix()+_field.getName()
+        _field.getOptions().attributes.id = this.getPrefix()+_field.getName();
         this.getFields().push(_field);
     }
     return this;

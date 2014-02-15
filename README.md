@@ -17,6 +17,7 @@ mpm.form handles form creation , request and model binding ,  validation and htm
 form widgets.
 
 ####ChangeLog
+- 0.0.23 api changed , see basic usage
 - 0.0.22 added fields.Repeated
 - 0.0.20 added fields.Email
 - 0.0.19 fields.Date && fields.Time added
@@ -38,8 +39,8 @@ in package.json file :
 Given a blog application , users need to write posts.
 Let's create a form for blog posts
 	 
-	var form = require('mpm.form').form;
-	var validation = require('mpm.form').validation;
+	var form = require('mpm.form'),
+	    validation = form.validation;
 
 form.creatBuildler(name,options):form.FormBuilder
 

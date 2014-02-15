@@ -32,13 +32,15 @@ in package.json file :
 
 ####BASIC USAGE
 
-```javascript
-	/**
-	 * Given a blog application , users need to write posts.
-	 * Let's create a form for posts
-	 */
+
+
+Given a blog application , users need to write posts.
+Let's create a form for blog posts
+	 
 	var form = require('mpm.form').form;
 	var validation = require('mpm.form').validation;
+
+form.creatBuildler(name,options):form.FormBuilder
 
 	// FormBuilder.add(fieldname,fieldtype,fieldoptions)
 	var postForm = form.createBuilder("post_form"/*the form name*/)
@@ -52,36 +54,44 @@ in package.json file :
         .add('reset', 'reset', {attributes: {value: 'reset'}})
         .add('create', 'submit', {attributes: {value: 'create'}, validators: validation.Required()});
         
-    //to render the fields as HTML , just call : 
+Render the fields as HTML , just call formBuilder.toHTML()
+
     postForm.toHTML();
 
-    //to get all the fields configurations and values ,
-    //and support your own templating engine 
-    //get all datas with : 
-    postForm.toJSON();
-    // you can then write your own helpers to render the form
+Get all form datas ,for your own templating engine , view helpers , ... :
 
-    //we want our form to have initial datas and bind a model 
-    //(from the a database for instance )
+    postForm.toJSON();
+
+Add initial form data to the formBuidlder (from the a database for instance ):
+
     var model = new ModelFromDB({content:'some content',title:"some title"});
     postForm.setModel(model);
 
-    //we want to bind our form to the body of a post request
-    //with express framework , one would write :
+We want to bind our form to the body of a post request
+
+with expressjs , one would write :
+
     if(request.method==="POST"){
     	postForm.bind(request.body);
-    	//postForm now contains request.body datas
-    	//our model (model) has been modified too
     }
-    //let's validate the form
-    postForm.validate(function(error,result){
+
+postForm now contains request.body datas, the model has been modified too
+    
+validate the form : 
+
+    postForm.validate(function(error,isValid){
 		...
     });
-    ///result will be true if the form is valid
-    ///to get form errors
+    
+isValid  will be true if the form is valid
+
+Get form errors : 
+
     postForm.getErrors(); 
-    //will yield an array of Error objects
-    ///if the form is valid ,we can save the model to the db
+
+will yield an array of Error objects
+if the form is valid ,we can save the model to the db
+
     model.save(callback)
 
 ```
@@ -94,6 +104,7 @@ in package.json file :
 - time: input of type time
 - password: input of type password
 - hidden: input of type hidden
+- repeated  : 2 input fields that must have the same value (for password confirmation for instance )
 - checkbox: input of type check
 - radio: input of type radio
 - button: input of type button

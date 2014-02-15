@@ -12,12 +12,12 @@ var form = exports;
  */
 form.loaders = {};
 /**
- *
+ * Field loading strategy
  * @constructor
  */
 form.loaders.FieldLoader =function(){};
 /**
- *
+ * Load fields by lowercase name
  * @param type
  * @param name
  * @param options
@@ -60,7 +60,7 @@ form.loaders.FieldLoader.prototype.load = function (name,type,options) {
     }
 };
 /**
- * [FieldTypeLoader description]
+ * load fields if name in fields namespace
  */
 form.loaders.FieldTypeLoader=function(){};
 form.loaders.FieldTypeLoader.prototype.load = function (name,type,options){
@@ -75,31 +75,24 @@ form.loaders.FieldTypeLoader.prototype.load = function (name,type,options){
 form.FormBuilder = function (name) {
     this._fields = [];
     this.fieldLoaders = [];
-    this._name = name;
-    this._prefix = this._name ? this._name + "_" : "";
+    this._name = name||'form';
     this._bound = false;
 };
 form.FormBuilder.prototype.getName = function () {
     return this._name;
 };
 form.FormBuilder.prototype.getPrefix = function () {
-    return this._prefix;
+    return this._name+"_";
 };
-form.FormBuilder.prototype.prefixedName = function (name) {
-    /*
-    if (this._prefix) {
-        return this._prefix + name;
-    }
-    */
-    return name;
+/**
+ * given a prefixed name , return name
+ * @param name
+ * @returns {*}
+ */
+form.FormBuilder.prototype.getNameWithoutPrefix = function (name) {
+   return name.replace(this.getPrefix(),"");
 };
-form.FormBuilder.prototype.nameFromPrefixedName = function (prefixedName) {
-    prefixedName = prefixedName || "";
-    if (this._prefix) {
-        return prefixedName.replace(this._prefix, "");
-    }
-    return null;
-};
+
 /**
  *
  * @param fieldLoader
@@ -130,13 +123,15 @@ form.FormBuilder.prototype.resolveField = function (name, type, options) {
  * @returns {*}
  */
 form.FormBuilder.prototype.add = function (name,type,options) {
+    var _field;
     if (name instanceof fields.Base) {
-        this._fields.push(name);
+        _field = name;
     } else {
-        var _field = this.resolveField(name,type , options);
-        if(_field){
-            this._fields.push(_field);
-        }
+        _field = this.resolveField(name,type , options);
+    }
+    if(_field){
+        _field.getOptions().attributes.id = this.getPrefix()+_field.getName()
+        this.getFields().push(_field);
     }
     return this;
 };
@@ -214,7 +209,7 @@ form.FormBuilder.prototype.getData = function () {
  */
 form.FormBuilder.prototype.getByName = function (name) {
     return _.find(this._fields, function (field) {
-        return field.name === this.prefixedName(name);
+        return field.name === this.getNameWithoutPrefix(name);
     },this);
 };
 form.FormBuilder.prototype.getName = function () {

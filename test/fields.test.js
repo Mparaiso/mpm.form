@@ -140,7 +140,7 @@ describe('form.fields', function() {
         });
     });
     describe('.Repeated', function() {
-        var repeated = new fields.Repeated('password');
+        var repeated = new fields.Repeated('password',{attributes:{id:"repeated"}});
         it('should be a repeated field', function() {
             assert.equal(repeated.type, 'repeated');
         });

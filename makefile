@@ -7,7 +7,7 @@ install:
 	npm install
 commit:
 	@git add .
-	@git commit -am"auto update `date`" || : 
+	@git commit -am"$(message) `date`" || : 
 push: commit
 	@git push origin master || : 
 publish:

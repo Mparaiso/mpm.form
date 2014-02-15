@@ -1,7 +1,7 @@
 /*global describe,it*/
 "use strict";
 var assert = require('assert');
-var validation = require('../index').validation;
+var validation = require('../form').validation;
 describe('validation.MinLength', function () {
     var min = validation.MinLength(5);
     it('should validate async', function (done) {

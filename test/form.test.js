@@ -2,7 +2,7 @@
 "use strict";
 var expect = require('chai').expect;
 var assert = require('assert');
-var forms = require('../index')
+var forms = require('../form')
     , fields = forms.fields
     , validation = forms.validation
     , form = forms.form;

@@ -89,6 +89,7 @@ in package.json file :
 ####SUPPORTED FIELDS
 
 - text: input of type text
+- email: input of type email
 - date: input of type date
 - time: input of type time
 - password: input of type password

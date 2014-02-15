@@ -1,7 +1,7 @@
 
 module.exports = {
-    form:require('./lib/form'),
-    fields:require('./lib/fields'),
-    utils:require('./lib/utils'),
+    form:require('./js/form'),
+    fields:require('./js/fields'),
+    utils:require('./js/utils'),
     validation:require('mpm.validation')
 };

@@ -1,5 +1,5 @@
 test:
-	@node_modules/.bin/mocha
+	@node_modules/.bin/mocha -R spec
 #continuous testing
 ct:
 	@bin/ct.sh

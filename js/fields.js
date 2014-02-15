@@ -27,8 +27,7 @@ fields.Base = function (name, options) {
     this.options.label = this.options.label || this.name;
     this.options.validators = options.validators ? options.validators instanceof Array ? options.validators : [options.validators] : [];
     /* set default data */
-    if (this.options.
-        default !== undefined) {
+    if (this.options.default !== undefined) {
         this.setData(this.options.
             default);
     }
@@ -162,15 +161,14 @@ fields.Base.prototype.getOptions = function () {
  * @extends {fields.Base}
  */
 fields.Text = function (name, options) {
-    fields.Base.apply(this, [].slice.apply(arguments));
+    fields.Text.super_.apply(this,arguments);
     this.type = "text";
 };
 /**
  *
  * @type {fields.Base}
  */
-fields.Text.prototype = new fields.Base();
-fields.Text.prototype.constructor = fields.Base;
+util.inherits(fields.Text,fields.Base);
 /**
  * Email field type
  * @constructor
@@ -237,8 +235,7 @@ fields.Check.fromData = function (data) {
     check.options.label = utils.returnDefined(data.key, data);
     return check;
 };
-fields.Check.prototype = new fields.Text();
-fields.Check.prototype.constructor = fields.Text;
+util.inherits(fields.Check,fields.Text);
 /**
  *
  * @returns {*}
@@ -327,8 +324,7 @@ fields.Button = function () {
     this.options.label = "";
     this.type = "button";
 };
-fields.Button.prototype = new fields.Text();
-fields.Button.prototype.constructor = fields.Text;
+util.inherits(fields.Button,fields.Text);
 
 /**
  *
@@ -338,15 +334,13 @@ fields.Submit = function () {
     fields.Button.apply(this, [].slice.apply(arguments));
     this.type = "submit";
 };
-fields.Submit.prototype = new fields.Button();
-fields.Submit.prototype.constructor = fields.Button;
+util.inherits(fields.Submit,fields.Button);
 
 fields.Reset = function () {
     fields.Button.apply(this, [].slice.apply(arguments));
     this.type = "reset";
 };
-fields.Reset.prototype = new fields.Button();
-fields.Reset.prototype.constructor = fields.Button;
+util.inherits(fields.Button,fields.Reset);
 
 /**
  *

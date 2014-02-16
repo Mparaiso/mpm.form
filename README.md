@@ -42,9 +42,6 @@ Let's create a form for blog posts
 	 
 	var form = require('mpm.form'),
 	    validation = form.validation;
-
-form.creatBuildler(name,options):form.FormBuilder
-
 	// FormBuilder.add(fieldname,fieldtype,fieldoptions)
 	var postForm = form.create("post_form"/*the form name*/)
         .add('title', 'text', {

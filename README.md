@@ -58,7 +58,7 @@ Render the fields as HTML , just call formBuilder.toHTML()
 
     postForm.toHTML();
 
-Get all form datas ,for your own templating engine , view helpers , ... :
+or get all form datas ,and implement a custom renderer for your template engine :
 
     postForm.toJSON();
 
@@ -94,7 +94,6 @@ if the form is valid ,we can save the model to the db
 
     model.save(callback)
 
-```
 
 ####SUPPORTED FIELDS
 

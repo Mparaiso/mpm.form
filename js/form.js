@@ -7,26 +7,27 @@ var fields = require('./fields');
 var form = exports;
 
 /**
- * Field type loaders
+ * Field loading strategies
  * @namespace
  */
 form.loaders = {};
 /**
- * Field loading strategy
+ * load fields by string name,ex :"email"
  * @constructor
  */
-form.loaders.FieldLoader =function(){};
+form.loaders.FieldLoader = function () {
+};
 /**
- * Load fields by lowercase name
+ * Load field
  * @param type
  * @param name
  * @param options
  * @returns {*}
  */
-form.loaders.FieldLoader.prototype.load = function (name,type,options) {
+form.loaders.FieldLoader.prototype.load = function (name, type, options) {
     switch (type) {
         case "text":
-            return new fields.Text(name,options);
+            return new fields.Text(name, options);
         case "email":
             return new fields.Email(name, options);
         case "date":
@@ -58,18 +59,22 @@ form.loaders.FieldLoader.prototype.load = function (name,type,options) {
         case "submit":
             return new fields.Submit(name, options);
         case "repeated":
-            return new fields.Repeated(name,options);
+            return new fields.Repeated(name, options);
     }
 };
+
 /**
- * load fields if name in fields namespace
+ * load fields by actual type: ex: fields.Email
  */
-form.loaders.FieldTypeLoader=function(){};
-form.loaders.FieldTypeLoader.prototype.load = function (name,type,options){
-    if(_.contains(fields,type)){
-        return new type(name,options);
+form.loaders.FieldTypeLoader = function () {
+};
+form.loaders.FieldTypeLoader.prototype.load = function (name, type, options) {
+    if (_.contains(fields, type)) {
+        return new type(name, options);
     }
 };
+
+
 /**
  *
  * @constructor
@@ -77,14 +82,14 @@ form.loaders.FieldTypeLoader.prototype.load = function (name,type,options){
 form.FormBuilder = function (name) {
     this._fields = [];
     this.fieldLoaders = [];
-    this._name = name||'form';
+    this._name = name || 'form';
     this._bound = false;
 };
 form.FormBuilder.prototype.getName = function () {
     return this._name;
 };
 form.FormBuilder.prototype.getPrefix = function () {
-    return this._name+"_";
+    return this._name + "_";
 };
 /**
  * given a prefixed name , return name
@@ -92,7 +97,7 @@ form.FormBuilder.prototype.getPrefix = function () {
  * @returns {*}
  */
 form.FormBuilder.prototype.getNameWithoutPrefix = function (name) {
-   return name.replace(this.getPrefix(),"");
+    return name.replace(this.getPrefix(), "");
 };
 
 /**
@@ -111,11 +116,13 @@ form.FormBuilder.prototype.addFieldLoader = function (fieldLoader) {
  */
 form.FormBuilder.prototype.resolveField = function (name, type, options) {
     var i = 0, field;
-    while ( !field && i < this.fieldLoaders.length) {
+    while (!field && i < this.fieldLoaders.length) {
         field = this.fieldLoaders[i].load(name, type, options);
         i += 1;
     }
-    if(field){return field;}
+    if (field != undefined) {
+        return field;
+    }
 };
 /**
  *
@@ -124,24 +131,24 @@ form.FormBuilder.prototype.resolveField = function (name, type, options) {
  * @param options
  * @returns {*}
  */
-form.FormBuilder.prototype.add = function (name,type,options) {
+form.FormBuilder.prototype.add = function (name, type, options) {
     var _field;
     if (name instanceof fields.Base) {
         _field = name;
     } else {
-        _field = this.resolveField(name,type,options);
+        _field = this.resolveField(name, type, options);
     }
-    if(_field){
-        _field.getOptions().attributes.id = this.getPrefix()+_field.getName();
+    if (_field !== undefined) {
+        _field.getOptions().attributes.id = this.getPrefix() + _field.getName();
         this.getFields().push(_field);
     }
     return this;
 };
-form.FormBuilder.prototype.remove=function(name){
-    var fields,field = this.getByName(name);
-    if(field){
+form.FormBuilder.prototype.remove = function (name) {
+    var fields, field = this.getByName(name);
+    if (field) {
         fields = this.getFields();
-        fields.splice(fields.indexOf(field),1);
+        fields.splice(fields.indexOf(field), 1);
     }
     return this;
 };
@@ -205,15 +212,16 @@ form.FormBuilder.prototype.getData = function () {
     return datas;
 };
 /**
- *
+ * Find field by name
  * @param name
  * @returns {*}
  */
 form.FormBuilder.prototype.getByName = function (name) {
     return _.find(this._fields, function (field) {
         return field.name === this.getNameWithoutPrefix(name);
-    },this);
+    }, this);
 };
+form.FormBuilder.prototype.find = form.FormBuilder.prototype.getByName;
 form.FormBuilder.prototype.getName = function () {
     return this._name;
 };
@@ -283,12 +291,11 @@ form.FormBuilder.prototype.isBound = function () {
  *
  * @returns {form.FormBuilder}
  */
-form.createFormBuilder = function (name) {
+form.create = function (name) {
     var f = new form.FormBuilder(name);
     f.addFieldLoader(new form.loaders.FieldLoader());
     f.addFieldLoader(new form.loaders.FieldTypeLoader());
     return f;
 };
-form.createBuilder = form.createFormBuilder;
 
 

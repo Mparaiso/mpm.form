@@ -23,10 +23,10 @@ describe('form',function(){
     });
 });
 describe('form', function () {
-    describe('.FormBuilder', function () {
+    describe('#create', function () {
         beforeEach(function () {
             this.genders = ['male', 'female', 'other'];
-            this.form = form.createBuilder()
+            this.form = form.create()
                 .add('firstname','text',  {validators: [validation.Required(), validation.Length(3, 50)]})
                 .add('lastname','text',  {validators: [validation.Required(), validation.Length(3, 50)]})
                 .add('birthday','date',{validators:[validation.Required()]})

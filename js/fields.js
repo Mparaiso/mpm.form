@@ -22,7 +22,7 @@ fields.Base = function (name, options) {
     this.type = "base";
     this.template = _.template('<%=label%> <input <%=attributes%> />');
     this.name = name;
-    this.options = options;
+    this.options = _.extend({}, options);
     this.options.attributes = this.options.attributes || {};
     this.options.label = this.options.label || this.name;
     this.options.validators = options.validators ? options.validators instanceof Array ? options.validators : [options.validators] : [];
@@ -161,14 +161,17 @@ fields.Base.prototype.getOptions = function () {
  * @extends {fields.Base}
  */
 fields.Text = function (name, options) {
-    fields.Text.super_.apply(this,arguments);
+    if (name == undefined) {
+        throw "name is mandatory";
+    }
+    fields.Base.apply(this, [].slice.call(arguments));
     this.type = "text";
 };
 /**
  *
  * @type {fields.Base}
  */
-util.inherits(fields.Text,fields.Base);
+util.inherits(fields.Text, fields.Base);
 /**
  * Email field type
  * @constructor
@@ -178,8 +181,7 @@ fields.Email = function (name, options) {
     fields.Text.apply(this, [].slice.apply(arguments));
     this.type = "email";
 };
-fields.Email.prototype = new fields.Text();
-fields.Email.prototype.constructor = fields.Text;
+util.inherits(fields.Email, fields.Text);
 /**
  * date form type
  */
@@ -235,7 +237,7 @@ fields.Check.fromData = function (data) {
     check.options.label = utils.returnDefined(data.key, data);
     return check;
 };
-util.inherits(fields.Check,fields.Text);
+util.inherits(fields.Check, fields.Text);
 /**
  *
  * @returns {*}
@@ -313,8 +315,7 @@ fields.Radio.fromData = function (data) {
     radio.options.label = data.key;
     return radio;
 };
-fields.Radio.prototype = new fields.Text();
-fields.Radio.prototype.constructor = fields.Text;
+util.inherits(fields.Radio, fields.Text);
 /**
  * @augments fields.Text
  * @constructor
@@ -324,7 +325,7 @@ fields.Button = function () {
     this.options.label = "";
     this.type = "button";
 };
-util.inherits(fields.Button,fields.Text);
+util.inherits(fields.Button, fields.Text);
 
 /**
  *
@@ -334,13 +335,13 @@ fields.Submit = function () {
     fields.Button.apply(this, [].slice.apply(arguments));
     this.type = "submit";
 };
-util.inherits(fields.Submit,fields.Button);
+util.inherits(fields.Submit, fields.Button);
 
 fields.Reset = function () {
     fields.Button.apply(this, [].slice.apply(arguments));
     this.type = "reset";
 };
-util.inherits(fields.Button,fields.Reset);
+util.inherits(fields.Button, fields.Reset);
 
 /**
  *

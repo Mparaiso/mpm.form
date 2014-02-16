@@ -17,6 +17,7 @@ mpm.form handles form creation , request and model binding ,  validation and htm
 form widgets.
 
 ####ChangeLog
+- 0.0.24 api changed , form.createBuilder is now __form.create__
 - 0.0.23 api changed , see basic usage
 - 0.0.22 added fields.Repeated
 - 0.0.20 added fields.Email
@@ -45,7 +46,7 @@ Let's create a form for blog posts
 form.creatBuildler(name,options):form.FormBuilder
 
 	// FormBuilder.add(fieldname,fieldtype,fieldoptions)
-	var postForm = form.createBuilder("post_form"/*the form name*/)
+	var postForm = form.create("post_form"/*the form name*/)
         .add('title', 'text', {
             validators: [validation.Required(), validation.Length(3, 200)]})
         .add('excerpt', 'textarea', {attributes: {rows: 3},

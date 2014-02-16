@@ -1,4 +1,31 @@
-/*jslint unparam:true,todo:false*/
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: c:/development/categories/node/mpm.form/js/fields.js</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Source: c:/development/categories/node/mpm.form/js/fields.js</h1>
+    
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source"><code>/*jslint unparam:true,todo:false*/
 "use strict";
 var _ = require('underscore');
 var util = require('util');
@@ -20,7 +47,7 @@ var fields = {};
 fields.Base = function (name, options) {
     options = options || {};
     this.type = "base";
-    this.template = _.template('<%=label%> <input <%=attributes%> />');
+    this.template = _.template('&lt;%=label%> &lt;input &lt;%=attributes%> />');
     this.name = name;
     this.options = _.extend({}, options);
     this.options.attributes = this.options.attributes || {};
@@ -41,7 +68,7 @@ fields.Base.prototype.getPrefix = function () {
  * @returns {*}
  */
 fields.Base.prototype.renderAttributes = function (attrs) {
-    var template = _.template("<% for(attr in attributes){%> <%-attr%>='<%-attributes[attr]%>' <%}%>");
+    var template = _.template("&lt;% for(attr in attributes){%> &lt;%-attr%>='&lt;%-attributes[attr]%>' &lt;%}%>");
     return template({
         attributes: attrs
     });
@@ -54,7 +81,7 @@ fields.Base.prototype.getAttributes = function () {
     var attrs = _.extend({}, this.options.attributes);
     attrs.name = this.name;
     attrs.value = utils.returnDefined(this._data, attrs.value);
-    attrs.type = utils.returnDefined(attrs.type, this.type);
+    attrs.type = utils.returnDefined(this.type, attrs.type);
     return attrs;
 };
 fields.Base.prototype.setParent = function (parent) {
@@ -94,22 +121,6 @@ fields.Base.prototype.validate = function (callback) {
         }
         return callback(err, result);
     });
-};
-/**
- * validate a field sync
- * @returns {*|Boolean}
- */
-fields.Base.prototype.validateSync = function () {
-    this.setError(undefined);
-    if (!_.isArray(this.options.validators)) {
-        this.options.validators = [this.options.validators];
-    }
-    var chain = validation.Chain.apply(this, _.compact(this.options.validators));
-    var valid = chain.validateSync(this.getData());
-    if (!valid) {
-        this.setError(chain.getError());
-    }
-    return valid;
 };
 fields.Base.prototype.getName = function () {
     return this.name;
@@ -232,7 +243,7 @@ fields.Password.prototype.constructor = fields.Base;
  */
 fields.Hidden = function () {
     fields.Base.apply(this, [].slice.apply(arguments));
-    this.template = _.template('<input <%=attributes%> />');
+    this.template = _.template('&lt;input &lt;%=attributes%> />');
     this.type = "hidden";
 };
 fields.Hidden.prototype = new fields.Base();
@@ -243,7 +254,7 @@ fields.Hidden.prototype = new fields.Base();
 fields.Check = function () {
     fields.Text.apply(this, [].slice.apply(arguments));
     this.type = "checkbox";
-    this.template = _.template("<input <%=attributes%> /> <%=label %>");
+    this.template = _.template("&lt;input &lt;%=attributes%> /> &lt;%=label %>");
 };
 fields.Check.fromData = function (data) {
     var check = new fields.Check(data.key, {
@@ -290,7 +301,7 @@ fields.Check.prototype.getData = function () {
 fields.Label = function () {
     fields.Base.apply(this, [].slice.apply(arguments));
     this.type = "label";
-    this.template = _.template('<label <%=attributes%> ><%-name%></label>');
+    this.template = _.template('&lt;label &lt;%=attributes%> >&lt;%-name%>&lt;/label>');
     this.defaults = {};
 };
 fields.Label.prototype = new fields.Base();
@@ -366,7 +377,7 @@ util.inherits(fields.Button, fields.Reset);
 fields.Option = function () {
     fields.Base.apply(this, [].slice.apply(arguments));
     this.type = "option";
-    this.template = _.template("<option <%=attributes%> ><%-label%></option>\n");
+    this.template = _.template("&lt;option &lt;%=attributes%> >&lt;%-label%>&lt;/option>\n");
 };
 fields.Option.prototype = new fields.Base();
 fields.Option.prototype.constructor = fields.Base;
@@ -436,7 +447,7 @@ fields.Choices.prototype.toJSON = function () {
 fields.Select = function () {
     fields.Choices.apply(this, [].slice.apply(arguments));
     this.type = "select";
-    this.template = _.template('<label <%-labelAttrs%> ><%-label%></label><select <%=attributes%> >\n<% _.each(options,function(o){print(o.toHTML());}) %></select>');
+    this.template = _.template('&lt;label &lt;%-labelAttrs%> >&lt;%-label%>&lt;/label>&lt;select &lt;%=attributes%> >\n&lt;% _.each(options,function(o){print(o.toHTML());}) %>&lt;/select>');
 };
 util.inherits(fields.Select, fields.Choices);
 fields.Select.prototype.getAttributes = function () {
@@ -573,7 +584,7 @@ fields.RadioGroup.prototype.getData = function () {
 fields.TextArea = function (name, options) {
     fields.Base.apply(this, [].slice.apply(arguments));
     this.type = "textarea";
-    this.template = _.template('<%=label%> <textarea <%=attributes%>><%=value%></textarea>');
+    this.template = _.template('&lt;%=label%> &lt;textarea &lt;%=attributes%>>&lt;%=value%>&lt;/textarea>');
 };
 fields.TextArea.prototype = new fields.Base();
 fields.TextArea.prototype.constructor = fields.Base;
@@ -606,7 +617,7 @@ fields.Repeated.prototype.getData = function () {
 };
 
 fields.Repeated.prototype.validate = function (callback) {
-    if (this._data && this._data instanceof Array) {
+    if (this._data &amp;&amp; this._data instanceof Array) {
         this.options.validators.unshift(validation.EqualTo(this._data[1]));
     }
     this.validators = [];
@@ -631,3 +642,26 @@ fields.Repeated.prototype.toHTML = function () {
 };
 
 module.exports = fields;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="fields.Base.html">Base</a></li><li><a href="fields.Button.html">Button</a></li><li><a href="fields.Check.html">Check</a></li><li><a href="fields.CheckboxGroup.html">CheckboxGroup</a></li><li><a href="fields.Choices.html">Choices</a></li><li><a href="fields.Email.html">Email</a></li><li><a href="fields.Hidden.html">Hidden</a></li><li><a href="fields.Label.html">Label</a></li><li><a href="fields.Option.html">Option</a></li><li><a href="fields.Password.html">Password</a></li><li><a href="fields.Radio.html">Radio</a></li><li><a href="fields.RadioGroup.html">RadioGroup</a></li><li><a href="fields.Select.html">Select</a></li><li><a href="fields.Submit.html">Submit</a></li><li><a href="fields.Text.html">Text</a></li><li><a href="form.FormBuilder.html">FormBuilder</a></li><li><a href="form.loaders.FieldLoader.html">FieldLoader</a></li></ul><h3>Namespaces</h3><ul><li><a href="fields.html">fields</a></li><li><a href="form.loaders.html">loaders</a></li><li><a href="utils.html">utils</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha2</a> on Sun Feb 16 2014 01:48:27 GMT+0100 (Paris, Madrid)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

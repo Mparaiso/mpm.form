@@ -6,7 +6,7 @@ mpm.form
 
 [![Build Status](https://travis-ci.org/Mparaiso/mpm.form.png?branch=master)](https://travis-ci.org/Mparaiso/mpm.form)
 
-version: 0.0.22
+version: 0.0.25
 
 author: mparaiso <mparaiso@online.fr>
 
@@ -17,6 +17,7 @@ mpm.form handles form creation , request and model binding ,  validation and htm
 form widgets.
 
 ####ChangeLog
+- 0.0.25 form can now validate sync
 - 0.0.24 api changed , form.createBuilder is now __form.create__
 - 0.0.23 api changed , see basic usage
 - 0.0.22 added fields.Repeated

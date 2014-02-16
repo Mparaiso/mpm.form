@@ -86,6 +86,14 @@ validate the form :
     
 isValid  will be true if the form is valid
 
+You can also validate the form synchronously, if all validators are synchronous. Dont use it if a custom validator involves some I/O task :
+
+    var isValid = postForm.validateSync()
+
+    // Dont use that if one validator is Async,
+    // for instance a validator that would check if a field is unique
+    // in the database
+
 Get form errors : 
 
     postForm.getErrors(); 

@@ -6,15 +6,17 @@ var form = require('../form'),
     validation = form.validation,
     fields = form.fields;
 
-describe('form', function () {
-    describe('loaders.FieldTypeLoader', function () {
+describe('form', function() {
+    describe('loaders.FieldTypeLoader', function() {
         var loader = new form.loaders.FieldTypeLoader();
-        it('should load forms.fields.Email ', function (done) {
-            var email = loader.load('email', fields.Email, {validators: [validation.Required()]});
+        it('should load forms.fields.Email ', function(done) {
+            var email = loader.load('email', fields.Email, {
+                validators: [validation.Required()]
+            });
             assert.ok(email instanceof fields.Email);
             assert.ok(email.validate);
             assert.ok(email.setData);
-            email.validate(function (err, result) {
+            email.validate(function(err, result) {
                 assert(err instanceof Error);
                 expect(err.message).to.contain('email', 'required');
                 done();
@@ -22,17 +24,30 @@ describe('form', function () {
         });
     });
 });
-describe('form', function () {
-    describe('#create', function () {
-        beforeEach(function () {
+describe('form', function() {
+    describe('#create', function() {
+        beforeEach(function() {
             this.genders = ['male', 'female', 'other'];
             this.form = form.create()
-                .add('firstname', 'text', {validators: [validation.Required(), validation.Length(3, 50)]})
-                .add('lastname', 'text', {validators: [validation.Required(), validation.Length(3, 50)]})
-                .add('birthday', 'date', {validators: [validation.Required()]})
-                .add('email', 'email', {validators: [validation.Required(), validation.Email()]})
-                .add('password', 'password', {validators: [validation.Required(), validation.Length(5, 50)]})
-                .add('gender', 'radiogroup', {choices: this.genders, validators: [validation.Required()]});
+                .add('firstname', 'text', {
+                    validators: [validation.Required(), validation.Length(3, 50)]
+                })
+                .add('lastname', 'text', {
+                    validators: [validation.Required(), validation.Length(3, 50)]
+                })
+                .add('birthday', 'date', {
+                    validators: [validation.Required()]
+                })
+                .add('email', 'email', {
+                    validators: [validation.Required(), validation.Email()]
+                })
+                .add('password', 'password', {
+                    validators: [validation.Required(), validation.Length(5, 50)]
+                })
+                .add('gender', 'radiogroup', {
+                    choices: this.genders,
+                    validators: [validation.Required()]
+                });
 
             this.data = {
                 firstname: "john",
@@ -43,34 +58,77 @@ describe('form', function () {
                 gender: 'male'
             };
         });
-        it('should have an  field name email', function () {
+        it('should have an  field name email', function() {
             assert(this.form.getByName('email'));
         });
-        it('should validate', function (done) {
+        it('should validate', function(done) {
             this.form.setData(this.data);
             this.form.validate(done);
         });
-        it('should validate sync', function () {
+        it('should validate sync', function() {
             this.form.setData(this.data);
             assert(this.form.validateSync());
             assert(!this.form.getErrors());
         });
     });
 });
+describe('A registration form', function() {
+    beforeEach(function() {
+        this.form = form.create("registration")
+            .add('username', 'text', {
+                validators: [validation.Required(), validation.Length(5, 50)]
+            })
+            .add('email', 'email', {
+                validators: [validation.Email(), validation.Required(), validation.Length(7, 50)]
+            })
+            .add('password', 'repeated', {
+                validators: [validation.Required()]
+            })
+            .add('agreement', 'checkbox', {
+                validators: [validation.Required()],
+                attributes: {
+                    value: "agreed"
+                }
+            })
+            .add('submit', 'submit');
+    });
+    it('should validate with correct data', function() {
+        var body = {
+            username: 'johnny',
+            email: 'johnny@doe.com',
+            password: ['bar', 'bar'],
+            agreement: 'agreed'
+        };
+        this.form.bind(body);
+        assert(this.form.validateSync(), JSON.stringify(this.form.getErrors()));
+    });
+    it('shouldnt validate if paswords dont match', function() {
+        var body = {
+            username: 'michelle',
+            email: "michelle@mozilla.com",
+            password: ['bar', 'baz'],
+            agreement: 'agreed'
+        };
+        this.form.bind(body);
+        var valid = this.form.validateSync();
+        console.log(this.form.getErrors());
+        assert(!valid);
+    });
+});
+describe("form with repeated field ", function() {
+    beforeEach(function() {
+        this.form = form.create('repeat')
+            .add('word', 'repeated');
+    });
+    it('should not validate when words mismatch', function() {
+        this.form.bind({
+            word: ['foo', 'bar']
+        });
+        var valid = this.form.validateSync();
+        assert(!valid);
+    });
+});
 /*
- describe('FORM',function(){
- var attributes = {
- value:"a value",
- required:"true",
- class:"input-small"
- };
- describe("form.fields.Base",function(){
- var base = new forms.fields.Base("base",{'attributes':attributes});
- var html = base.toHTML();
- it('should render properly',function(){
- expect(html).to.contain("value");
- });
- });
  describe("form.fields.Text",function(){
  var text= new forms.fields.Text("address",{'attributes':attributes});
  text.setData("London");

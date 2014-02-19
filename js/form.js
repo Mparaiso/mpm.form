@@ -4,6 +4,12 @@ var _ = require('underscore');
 var utils = require('./utils');
 var validation = require('mpm.validation');
 var fields = require('./fields');
+
+/** @module  form */
+
+/**
+ * @namespace
+ */
 var form = exports;
 
 /**
@@ -76,7 +82,7 @@ form.loaders.FieldTypeLoader.prototype.load = function (name, type, options) {
 
 
 /**
- *
+ * Main Form class to build HTML forms
  * @constructor
  */
 form.FormBuilder = function (name) {
@@ -273,10 +279,10 @@ form.FormBuilder.prototype.addError = function (err) {
     this._errors.push(err);
 };
 form.FormBuilder.prototype.getErrors = function () {
-    return this._errors
+    return this._errors;
 };
 form.FormBuilder.prototype.setErrors = function (errors) {
-    this._errors = errors
+    this._errors = errors;
 };
 form.FormBuilder.prototype.hasError = function () {
     return this._errors !== undefined;
@@ -300,8 +306,9 @@ form.FormBuilder.prototype.bind = function (body) {
 form.FormBuilder.prototype.isBound = function () {
     return this._bound;
 };
+
 /**
- *
+ * @param {string} name name of the form
  * @returns {form.FormBuilder}
  */
 form.create = function (name) {

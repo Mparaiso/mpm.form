@@ -152,7 +152,7 @@ describe('form.fields', function () {
             expect(field.toHTML()).to.contain('textarea');
             expect(field.toHTML()).to.contain('description');
         });
-    });
+    }); 
     describe('.Repeated', function () {
         var repeated = new fields.Repeated('password', {attributes: {id: "repeated"}});
         it('should be a repeated field', function () {
@@ -173,6 +173,10 @@ describe('form.fields', function () {
                 assert(err);
                 done();
             });
+        });
+        it('shouldnt validate sync when passwords dont match',function(){
+            repeated.setData(['pass','pass1']);
+            assert(!repeated.validateSync());
         });
         it('should get the right data', function () {
             repeated.setData(['mypass', "mypass"]);

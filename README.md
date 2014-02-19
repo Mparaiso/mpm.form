@@ -17,6 +17,7 @@ mpm.form handles form creation , request and model binding ,  validation and htm
 form widgets.
 
 ####ChangeLog
+- 0.0.3  repeated field now works as expected
 - 0.0.25 form can now validate sync
 - 0.0.24 api changed , form.createBuilder is now __form.create__
 - 0.0.23 api changed , see basic usage

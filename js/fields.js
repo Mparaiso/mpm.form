@@ -9,15 +9,24 @@ var validation = require('mpm.validation');
  * @namespace
  * @type {Object}
  */
-var fields = {};
+var fields = exports;
+
 /**
- *
- * @param name
- * @param options
- * @constructor
- * @type {Object}
+ * FieldOption type
+ * @typedef {Object} FieldOption
+ * @property {Array} validators an array of validators
+ * @property {Object} attributes a hash of html tag attributes
+ * @property {Object} default field's default value
  */
-fields.Base = function (name, options) {
+
+
+/**
+ * Base class for fields
+ * @param {String} name field name
+ * @param {FieldOption} options field options
+ * @constructor
+ */
+fields.Base = function(name, options) {
     options = options || {};
     this.type = "base";
     this.template = _.template('<%=label%> <input <%=attributes%> />');
@@ -27,67 +36,64 @@ fields.Base = function (name, options) {
     this.options.label = this.options.label || this.name;
     this.options.validators = options.validators ? options.validators instanceof Array ? options.validators : [options.validators] : [];
     /* set default data */
-    if (this.options.default !== undefined) {
+    if (this.options.
+        default !== undefined) {
         this.setData(this.options.
             default);
     }
 };
-fields.Base.prototype.getPrefix = function () {
+fields.Base.prototype.getPrefix = function() {
     return this.options.prefix || "";
 };
 /**
- *
+ * Render attribute string
  * @param attrs
- * @returns {*}
+ * @returns {String}
  */
-fields.Base.prototype.renderAttributes = function (attrs) {
+fields.Base.prototype.renderAttributes = function(attrs) {
     var template = _.template("<% for(attr in attributes){%> <%-attr%>='<%-attributes[attr]%>' <%}%>");
     return template({
         attributes: attrs
     });
 };
 /**
- *
- * @returns {*}
+ * Normalise attributes
+ * @returns {Ojbect}
  */
-fields.Base.prototype.getAttributes = function () {
+fields.Base.prototype.getAttributes = function() {
     var attrs = _.extend({}, this.options.attributes);
     attrs.name = this.name;
     attrs.value = utils.returnDefined(this._data, attrs.value);
     attrs.type = utils.returnDefined(attrs.type, this.type);
     return attrs;
 };
-fields.Base.prototype.setParent = function (parent) {
+fields.Base.prototype.setParent = function(parent) {
     this._parent = parent;
 };
 /**
  *
  * @param data
  */
-fields.Base.prototype.setData = function (data) {
+fields.Base.prototype.setData = function(data) {
     this._data = data;
 };
 /**
  *
  * @returns {*}
  */
-fields.Base.prototype.getData = function () {
+fields.Base.prototype.getData = function() {
     return this._data;
 };
 /**
- * Validate field
+ * Execute all validators on the field data.
  * @param {Function} callback
- * @returns {*}
  */
-fields.Base.prototype.validate = function (callback) {
+fields.Base.prototype.validate = function(callback) {
     this.setError(undefined);
     var self = this;
-    //if one validator and not an array , make it an array of one validator
-    if (!_.isArray(this.options.validators)) {
-        this.options.validators = [this.options.validators];
-    }
-    var chain = validation.Chain.apply(this, _.compact(this.options.validators));
-    return chain.validate(this.getData(), function (err, result) {
+    this.options.validators = this.options.validators instanceof Array ? this.options.validators : [this.options.validators];
+    var chain = validation.Chain.apply(this, _.compact(this.options.validators)); //compact will remove potential undefined values
+    return chain.validate(this.getData(), function(err, result) {
         if (err) {
             self.setError(err);
             err.message = [self.getName(), err.message].join(" ");
@@ -96,35 +102,31 @@ fields.Base.prototype.validate = function (callback) {
     });
 };
 /**
- * validate a field sync
+ * Validate a field synchronously
+ * will not work if one of the validators is async.
  * @returns {*|Boolean}
  */
-fields.Base.prototype.validateSync = function () {
-    this.setError(undefined);
-    if (!_.isArray(this.options.validators)) {
-        this.options.validators = [this.options.validators];
-    }
-    var chain = validation.Chain.apply(this, _.compact(this.options.validators));
-    var valid = chain.validateSync(this.getData());
-    if (!valid) {
-        this.setError(chain.getError());
-    }
+fields.Base.prototype.validateSync = function() {
+    var valid;
+    this.validate(function(e, v) {
+        valid = v;
+    });
     return valid;
 };
-fields.Base.prototype.getName = function () {
+fields.Base.prototype.getName = function() {
     return this.name;
 };
 /**
  * @todo  implement
  */
-fields.Base.prototype.processData = function () {
+fields.Base.prototype.processData = function() {
     return;
 };
 /**
  *
  * @returns {{options: *, name: *, type: *, data: (*|Array|Array|string)}}
  */
-fields.Base.prototype.toJSON = function () {
+fields.Base.prototype.toJSON = function() {
     return {
         options: this.options,
         name: this.name,
@@ -137,38 +139,41 @@ fields.Base.prototype.toJSON = function () {
  *
  * @returns {string}
  */
-fields.Base.prototype.toHTML = function () {
+fields.Base.prototype.toHTML = function() {
     return this.template({
         label: this.getLabel().toHTML(),
         attributes: this.renderAttributes(this.getAttributes())
     });
 };
-fields.Base.prototype.getLabel = function () {
+fields.Base.prototype.getLabel = function() {
     var id, labelAttributes;
     labelAttributes = _.extend({}, this.options.labelAttributes);
     id = this.getOptions().attributes.id;
     if (id) {
-        labelAttributes.for = this.getOptions().attributes.id;
+        labelAttributes.
+        for = this.getOptions().attributes.id;
     }
-    return new fields.Label(this.options.label, {attributes: labelAttributes});
+    return new fields.Label(this.options.label, {
+        attributes: labelAttributes
+    });
 };
 /**
  *
  * @returns {String}
  */
-fields.Base.prototype.toString = function () {
+fields.Base.prototype.toString = function() {
     return util.format("[object form.widget.%s]", this.type);
 };
-fields.Base.prototype.getError = function () {
+fields.Base.prototype.getError = function() {
     return this._error;
 };
-fields.Base.prototype.setError = function (error) {
+fields.Base.prototype.setError = function(error) {
     this._error = error;
 };
-fields.Base.prototype.hasError = function () {
+fields.Base.prototype.hasError = function() {
     return this._error instanceof Error;
 };
-fields.Base.prototype.getOptions = function () {
+fields.Base.prototype.getOptions = function() {
     return this.options;
 };
 
@@ -176,7 +181,7 @@ fields.Base.prototype.getOptions = function () {
  * @constructor
  * @extends {fields.Base}
  */
-fields.Text = function (name, options) {
+fields.Text = function(name, options) {
     if (name == undefined) {
         throw "name is mandatory";
     }
@@ -193,7 +198,7 @@ util.inherits(fields.Text, fields.Base);
  * @constructor
  * @augments {fields.Base}
  */
-fields.Email = function (name, options) {
+fields.Email = function(name, options) {
     fields.Text.apply(this, [].slice.apply(arguments));
     this.type = "email";
 };
@@ -201,7 +206,7 @@ util.inherits(fields.Email, fields.Text);
 /**
  * date form type
  */
-fields.Date = function (name, options) {
+fields.Date = function(name, options) {
     fields.Base.apply(this, [].slice.call(arguments));
     this.type = "date";
 };
@@ -210,7 +215,7 @@ fields.Date.prototype.constructor = fields.Base;
 /**
  * time form type
  */
-fields.Time = function (name, options) {
+fields.Time = function(name, options) {
     fields.Base.apply(this, [].slice.call(arguments));
     this.type = "time";
 };
@@ -220,7 +225,7 @@ fields.Time.prototype.constructor = fields.Base;
  * @augments fields.Base
  * @constructor
  */
-fields.Password = function () {
+fields.Password = function() {
     fields.Text.apply(this, [].slice.apply(arguments));
     this.type = "password";
 };
@@ -230,7 +235,7 @@ fields.Password.prototype.constructor = fields.Base;
  * @augments fields.Base
  * @constructor
  */
-fields.Hidden = function () {
+fields.Hidden = function() {
     fields.Base.apply(this, [].slice.apply(arguments));
     this.template = _.template('<input <%=attributes%> />');
     this.type = "hidden";
@@ -240,12 +245,12 @@ fields.Hidden.prototype = new fields.Base();
  *
  * @constructor
  */
-fields.Check = function () {
+fields.Check = function() {
     fields.Text.apply(this, [].slice.apply(arguments));
     this.type = "checkbox";
     this.template = _.template("<input <%=attributes%> /> <%=label %>");
 };
-fields.Check.fromData = function (data) {
+fields.Check.fromData = function(data) {
     var check = new fields.Check(data.key, {
         attributes: data.attributes
     });
@@ -258,14 +263,14 @@ util.inherits(fields.Check, fields.Text);
  *
  * @returns {*}
  */
-fields.Check.prototype.getAttributes = function () {
+fields.Check.prototype.getAttributes = function() {
     return fields.Text.prototype.getAttributes.apply(this, [].slice.apply(arguments));
 };
 /**
  *
  * @param data
  */
-fields.Check.prototype.setData = function (data) {
+fields.Check.prototype.setData = function(data) {
     this._data = data;
     if (_.isUndefined(data)) {
         delete this.options.attributes.checked;
@@ -277,7 +282,7 @@ fields.Check.prototype.setData = function (data) {
  *
  * @returns {*}
  */
-fields.Check.prototype.getData = function () {
+fields.Check.prototype.getData = function() {
     if (utils.isDefined(this.options.attributes.checked)) {
         return this._data;
     }
@@ -287,7 +292,7 @@ fields.Check.prototype.getData = function () {
  *
  * @constructor
  */
-fields.Label = function () {
+fields.Label = function() {
     fields.Base.apply(this, [].slice.apply(arguments));
     this.type = "label";
     this.template = _.template('<label <%=attributes%> ><%-name%></label>');
@@ -299,10 +304,10 @@ fields.Label.prototype.constructor = fields.Base;
  *
  * @returns {*}
  */
-fields.Label.prototype.getAttributes = function () {
+fields.Label.prototype.getAttributes = function() {
     return _.extend({}, this.options.attributes, this.defaults);
 };
-fields.Label.prototype.toHTML = function () {
+fields.Label.prototype.toHTML = function() {
     var name = utils.returnDefined(this.options.value, this.name, "");
     //if no name , dont return a label.
     if (name.trim()) {
@@ -318,11 +323,11 @@ fields.Label.prototype.toHTML = function () {
  *
  * @constructor
  */
-fields.Radio = function () {
+fields.Radio = function() {
     fields.Text.apply(this, [].slice.apply(arguments));
     this.type = "radio";
 };
-fields.Radio.fromData = function (data) {
+fields.Radio.fromData = function(data) {
     var radio;
     radio = new fields.Radio(data.key, {
         attributes: data.attributes || {}
@@ -336,7 +341,7 @@ util.inherits(fields.Radio, fields.Text);
  * @augments fields.Text
  * @constructor
  */
-fields.Button = function () {
+fields.Button = function() {
     fields.Text.apply(this, [].slice.apply(arguments));
     this.options.label = "";
     this.type = "button";
@@ -347,13 +352,13 @@ util.inherits(fields.Button, fields.Text);
  *
  * @constructor
  */
-fields.Submit = function () {
+fields.Submit = function() {
     fields.Button.apply(this, [].slice.apply(arguments));
     this.type = "submit";
 };
 util.inherits(fields.Submit, fields.Button);
 
-fields.Reset = function () {
+fields.Reset = function() {
     fields.Button.apply(this, [].slice.apply(arguments));
     this.type = "reset";
 };
@@ -363,14 +368,14 @@ util.inherits(fields.Button, fields.Reset);
  *
  * @constructor
  */
-fields.Option = function () {
+fields.Option = function() {
     fields.Base.apply(this, [].slice.apply(arguments));
     this.type = "option";
     this.template = _.template("<option <%=attributes%> ><%-label%></option>\n");
 };
 fields.Option.prototype = new fields.Base();
 fields.Option.prototype.constructor = fields.Base;
-fields.Option.fromData = function (data) {
+fields.Option.fromData = function(data) {
     var option;
     var attr = utils.returnDefined(data.attributes, {});
     option = new fields.Option(data.key, {
@@ -379,7 +384,7 @@ fields.Option.fromData = function (data) {
     option.options.attributes.value = data.value;
     return option;
 };
-fields.Option.prototype.toHTML = function () {
+fields.Option.prototype.toHTML = function() {
     return this.template({
         attributes: this.renderAttributes(this.getAttributes()),
         label: this.name
@@ -390,21 +395,21 @@ fields.Option.prototype.toHTML = function () {
  * @constructor
  * @augments fields.Base
  */
-fields.Choices = function () {
+fields.Choices = function() {
     fields.Base.apply(this, [].slice.apply(arguments));
     this.type = "choices";
     this.setChoices(this.options.choices || []);
 };
 fields.Choices.prototype = new fields.Base();
 fields.Choices.prototype.constructor = fields.Base;
-fields.Choices.prototype.getChoices = function () {
+fields.Choices.prototype.getChoices = function() {
     return this._choices;
 };
-fields.Choices.prototype.setChoices = function (value) {
+fields.Choices.prototype.setChoices = function(value) {
     this._choices = this.normaLizeChoices(value);
 };
-fields.Choices.prototype.normaLizeChoices = function (choices) {
-    return choices.map(function (choice, i) {
+fields.Choices.prototype.normaLizeChoices = function(choices) {
+    return choices.map(function(choice, i) {
         var o;
         if (_.isString(choice)) {
             o = {
@@ -422,7 +427,7 @@ fields.Choices.prototype.normaLizeChoices = function (choices) {
         return o;
     });
 };
-fields.Choices.prototype.toJSON = function () {
+fields.Choices.prototype.toJSON = function() {
     var json = fields.Base.prototype.toJSON.apply(this);
     json.choices = this.getChoices();
     json.data = this.getData();
@@ -433,19 +438,19 @@ fields.Choices.prototype.toJSON = function () {
  * @constructor
  * @extends {fields.Choices}
  */
-fields.Select = function () {
+fields.Select = function() {
     fields.Choices.apply(this, [].slice.apply(arguments));
     this.type = "select";
     this.template = _.template('<label <%-labelAttrs%> ><%-label%></label><select <%=attributes%> >\n<% _.each(options,function(o){print(o.toHTML());}) %></select>');
 };
 util.inherits(fields.Select, fields.Choices);
-fields.Select.prototype.getAttributes = function () {
+fields.Select.prototype.getAttributes = function() {
     var attrs = fields.Choices.prototype.getAttributes.apply(this);
     delete attrs.type;
     delete attrs.value;
     return attrs;
 };
-fields.Select.prototype.toHTML = function () {
+fields.Select.prototype.toHTML = function() {
     return this.template({
         label: utils.returnDefined(this.options.label, this.name),
         labelAttrs: this.renderAttributes(this.options.labelAttributes || {}),
@@ -453,9 +458,9 @@ fields.Select.prototype.toHTML = function () {
         options: this.getChoices().map(fields.Option.fromData)
     });
 };
-fields.Select.prototype.setData = function (data) {
+fields.Select.prototype.setData = function(data) {
     this._data = _.isArray(data) ? data : [data];
-    this._choices.forEach(function (c) {
+    this._choices.forEach(function(c) {
         if (_.has(this._data, c.value)) {
             c.attributes.selected = "selected";
         } else {
@@ -463,17 +468,17 @@ fields.Select.prototype.setData = function (data) {
         }
     }, this);
 };
-fields.Select.prototype.getData = function () {
-    return this.getChoices().filter(function (c) {
+fields.Select.prototype.getData = function() {
+    return this.getChoices().filter(function(c) {
         return c.attributes.selected;
-    }).map(function (c) {
-            return c.value;
-        });
+    }).map(function(c) {
+        return c.value;
+    });
 };
 /**
  * @constructor
  */
-fields.CheckboxGroup = function () {
+fields.CheckboxGroup = function() {
     fields.Choices.apply(this, [].slice.apply(arguments));
     this.type = "checkboxgroup";
 };
@@ -487,8 +492,8 @@ fields.CheckboxGroup.prototype.constructor = fields.Choices;
  *
  * @returns {string}
  */
-fields.CheckboxGroup.prototype.toHTML = function () {
-    return this.getChoices().map(function (o) {
+fields.CheckboxGroup.prototype.toHTML = function() {
+    return this.getChoices().map(function(o) {
         var check;
         check = fields.Check.fromData(o);
         check.options.label = o.key;
@@ -499,9 +504,9 @@ fields.CheckboxGroup.prototype.toHTML = function () {
  *
  * @param data
  */
-fields.CheckboxGroup.prototype.setData = function (data) {
+fields.CheckboxGroup.prototype.setData = function(data) {
     this._data = _.isArray(data) ? data : [data];
-    this.getChoices().forEach(function (c) {
+    this.getChoices().forEach(function(c) {
         if (_.contains(this._data, c.value)) {
             c.attributes.checked = "checked";
         } else {
@@ -513,19 +518,19 @@ fields.CheckboxGroup.prototype.setData = function (data) {
  *
  * @returns {Array}
  */
-fields.CheckboxGroup.prototype.getData = function () {
-    return this.getChoices().filter(function (c) {
+fields.CheckboxGroup.prototype.getData = function() {
+    return this.getChoices().filter(function(c) {
         return c.attributes.checked;
-    }).map(function (c) {
-            return c.value;
-        });
+    }).map(function(c) {
+        return c.value;
+    });
 };
 /**
  *
  * @constructor
  * @augments fields.Choices
  */
-fields.RadioGroup = function (name, options) {
+fields.RadioGroup = function(name, options) {
     fields.Choices.apply(this, [].slice.apply(arguments));
     this.type = "radio-group";
 };
@@ -535,8 +540,8 @@ fields.RadioGroup.prototype.constructor = fields.Choices;
  *
  * @returns {string}
  */
-fields.RadioGroup.prototype.toHTML = function () {
-    return this.getChoices().map(function (choice) {
+fields.RadioGroup.prototype.toHTML = function() {
+    return this.getChoices().map(function(choice) {
         var radio = fields.Radio.fromData(choice);
         radio.name = this.name;
         radio.options.label = choice.key;
@@ -547,9 +552,9 @@ fields.RadioGroup.prototype.toHTML = function () {
  *
  * @param data
  */
-fields.RadioGroup.prototype.setData = function (data) {
+fields.RadioGroup.prototype.setData = function(data) {
     this._data = _.isArray(data) ? data : [data];
-    this.getChoices().forEach(function (c) {
+    this.getChoices().forEach(function(c) {
         if (_.contains(this._data, c.value)) {
             c.attributes.checked = "checked";
             if (!this.options.attributes.multiple) {
@@ -564,20 +569,20 @@ fields.RadioGroup.prototype.setData = function (data) {
  *
  * @returns {Array}
  */
-fields.RadioGroup.prototype.getData = function () {
-    return this.getChoices().filter(function (c) {
+fields.RadioGroup.prototype.getData = function() {
+    return this.getChoices().filter(function(c) {
         return c.attributes.checked;
     });
 };
 
-fields.TextArea = function (name, options) {
+fields.TextArea = function(name, options) {
     fields.Base.apply(this, [].slice.apply(arguments));
     this.type = "textarea";
     this.template = _.template('<%=label%> <textarea <%=attributes%>><%=value%></textarea>');
 };
 fields.TextArea.prototype = new fields.Base();
 fields.TextArea.prototype.constructor = fields.Base;
-fields.TextArea.prototype.toHTML = function () {
+fields.TextArea.prototype.toHTML = function() {
     return this.template({
         label: this.getLabel().toHTML(),
         attributes: this.renderAttributes(this.getAttributes()),
@@ -591,29 +596,32 @@ fields.TextArea.prototype.toHTML = function () {
  * @param {String} name
  * @param {Object} options
  */
-fields.Repeated = function (name, options) {
-    this.constructor.super_.apply(this, [].slice.call(arguments));
+fields.Repeated = function(name, options) {
+    fields.Base.apply(this, [].slice.call(arguments));
     this.type = "repeated";
 };
 
-util.inherits(fields.Repeated, fields.Base);
+fields.Repeated.prototype = Object.create(fields.Base.prototype);
+fields.Repeated.prototype.constructor = fields.Repeated;
 
-fields.Repeated.prototype.getData = function () {
+fields.Repeated.prototype.setData = function(data) {
+    this._data = data instanceof Array ? data : [data];
+    return this;
+};
+
+fields.Repeated.prototype.getData = function() {
     if (this._data instanceof Array) {
         return this._data[0];
     }
     return "";
 };
 
-fields.Repeated.prototype.validate = function (callback) {
-    if (this._data && this._data instanceof Array) {
-        this.options.validators.unshift(validation.EqualTo(this._data[1]));
-    }
-    this.validators = [];
-    return this.constructor.super_.prototype.validate.call(this, callback);
+fields.Repeated.prototype.validate = function(callback) {
+    this.options.validators.push(validation.EqualTo(this._data[1]));
+    fields.Base.prototype.validate.call(this, callback);
 };
 
-fields.Repeated.prototype.toHTML = function () {
+fields.Repeated.prototype.toHTML = function() {
     var a, b;
     a = new fields.Text(this.name, this.options);
     b = new fields.Text(this.name, this.options);
@@ -629,5 +637,3 @@ fields.Repeated.prototype.toHTML = function () {
     }
     return a.toHTML() + b.toHTML();
 };
-
-module.exports = fields;

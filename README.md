@@ -6,7 +6,7 @@ mpm.form
 
 [![Build Status](https://travis-ci.org/Mparaiso/mpm.form.png?branch=master)](https://travis-ci.org/Mparaiso/mpm.form)
 
-version: 0.0.25
+version: 0.0.4
 
 author: mparaiso <mparaiso@online.fr>
 

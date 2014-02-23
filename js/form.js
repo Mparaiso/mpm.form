@@ -21,16 +21,17 @@ form.loaders = {};
  * load fields by string name,ex :"email"
  * @constructor
  */
-form.loaders.FieldLoader = function () {
+form.loaders.FieldLoader = function() {
+    return;
 };
 /**
  * Load field
  * @param type
  * @param name
  * @param options
- * @returns {*}
+ * @returns {fields.Base}
  */
-form.loaders.FieldLoader.prototype.load = function (name, type, options) {
+form.loaders.FieldLoader.prototype.load = function(name, type, options) {
     switch (type) {
         case "text":
             return new fields.Text(name, options);
@@ -66,17 +67,32 @@ form.loaders.FieldLoader.prototype.load = function (name, type, options) {
             return new fields.Submit(name, options);
         case "repeated":
             return new fields.Repeated(name, options);
+        case "boolean":
+        case "bool":
+            return new fields.Boolean(name, options);
+        case "label":
+            return new fields.Label(name,options);
     }
 };
 
 /**
  * load fields by actual type: ex: fields.Email
+ *
+ * @constructor
  */
-form.loaders.FieldTypeLoader = function () {
+form.loaders.FieldTypeLoader = function() {
+    return;
 };
-form.loaders.FieldTypeLoader.prototype.load = function (name, type, options) {
-    if (_.contains(fields, type)) {
-        return new type(name, options);
+/**
+ * [load description]
+ * @param  {string} name
+ * @param  {fields.Base} Type
+ * @param  {object} options
+ * @return {void|fields.Base}
+ */
+form.loaders.FieldTypeLoader.prototype.load = function(name, Type, options) {
+    if (_.contains(fields, Type)) {
+        return new Type(name, options);
     }
 };
 
@@ -85,16 +101,16 @@ form.loaders.FieldTypeLoader.prototype.load = function (name, type, options) {
  * Main Form class to build HTML forms
  * @constructor
  */
-form.FormBuilder = function (name) {
+form.FormBuilder = function(name) {
     this._fields = [];
     this.fieldLoaders = [];
     this._name = name || 'form';
     this._bound = false;
 };
-form.FormBuilder.prototype.getName = function () {
+form.FormBuilder.prototype.getName = function() {
     return this._name;
 };
-form.FormBuilder.prototype.getPrefix = function () {
+form.FormBuilder.prototype.getPrefix = function() {
     return this._name + "_";
 };
 /**
@@ -102,7 +118,7 @@ form.FormBuilder.prototype.getPrefix = function () {
  * @param name
  * @returns {*}
  */
-form.FormBuilder.prototype.getNameWithoutPrefix = function (name) {
+form.FormBuilder.prototype.getNameWithoutPrefix = function(name) {
     return name.replace(this.getPrefix(), "");
 };
 
@@ -110,7 +126,7 @@ form.FormBuilder.prototype.getNameWithoutPrefix = function (name) {
  *
  * @param fieldLoader
  */
-form.FormBuilder.prototype.addFieldLoader = function (fieldLoader) {
+form.FormBuilder.prototype.addFieldLoader = function(fieldLoader) {
     this.fieldLoaders.push(fieldLoader);
 };
 /**
@@ -118,15 +134,16 @@ form.FormBuilder.prototype.addFieldLoader = function (fieldLoader) {
  * @param type
  * @param name
  * @param options
- * @returns {*}
+ * @returns {fields.Base}
  */
-form.FormBuilder.prototype.resolveField = function (name, type, options) {
-    var i = 0, field;
+form.FormBuilder.prototype.resolveField = function(name, type, options) {
+    var i = 0,
+        field;
     while (!field && i < this.fieldLoaders.length) {
         field = this.fieldLoaders[i].load(name, type, options);
         i += 1;
     }
-    if (field != undefined) {
+    if (field !== undefined) {
         return field;
     }
 };
@@ -137,7 +154,7 @@ form.FormBuilder.prototype.resolveField = function (name, type, options) {
  * @param options
  * @returns {*}
  */
-form.FormBuilder.prototype.add = function (name, type, options) {
+form.FormBuilder.prototype.add = function(name, type, options) {
     var _field;
     if (name instanceof fields.Base) {
         _field = name;
@@ -150,7 +167,7 @@ form.FormBuilder.prototype.add = function (name, type, options) {
     }
     return this;
 };
-form.FormBuilder.prototype.remove = function (name) {
+form.FormBuilder.prototype.remove = function(name) {
     var fields, field = this.getByName(name);
     if (field) {
         fields = this.getFields();
@@ -159,14 +176,14 @@ form.FormBuilder.prototype.remove = function (name) {
     return this;
 };
 /**
- *
+ * render form
  * @param {Function} iterator
  * @returns {string}
  */
-form.FormBuilder.prototype.toHTML = function (iterator) {
+form.FormBuilder.prototype.toHTML = function(iterator) {
     var _iterator = iterator;
     if (_.isUndefined(_iterator)) {
-        _iterator = function (w) {
+        _iterator = function(w) {
             return w.toHTML();
         };
     }
@@ -176,8 +193,8 @@ form.FormBuilder.prototype.toHTML = function (iterator) {
  *
  * @returns {Array}
  */
-form.FormBuilder.prototype.toJSON = function () {
-    return this._fields.map(function (w) {
+form.FormBuilder.prototype.toJSON = function() {
+    return this._fields.map(function(w) {
         return w.toJSON();
     });
 };
@@ -185,7 +202,7 @@ form.FormBuilder.prototype.toJSON = function () {
  *
  * @param value
  */
-form.FormBuilder.prototype.setModel = function (value) {
+form.FormBuilder.prototype.setModel = function(value) {
     this._model = value;
     this.setData(this.getModel());
     return this;
@@ -194,15 +211,15 @@ form.FormBuilder.prototype.setModel = function (value) {
  *
  * @returns {*}
  */
-form.FormBuilder.prototype.getModel = function () {
+form.FormBuilder.prototype.getModel = function() {
     return this._model;
 };
 /**
  *
  * @param data
  */
-form.FormBuilder.prototype.setData = function (data) {
-    this._fields.forEach(function (field, i) {
+form.FormBuilder.prototype.setData = function(data) {
+    this._fields.forEach(function(field, i) {
         this._fields[i].setData(data[this._fields[i].name]);
     }, this);
 };
@@ -210,10 +227,10 @@ form.FormBuilder.prototype.setData = function (data) {
  *
  * @returns {{}}
  */
-form.FormBuilder.prototype.getData = function () {
+form.FormBuilder.prototype.getData = function() {
     var datas = {};
-    this._fields.forEach(function (w) {
-        datas[this.nameFromPrefixedName(w.name)] = w.getData();
+    this._fields.forEach(function(w) {
+        datas[w.name] = w.getData();
     }, this);
     return datas;
 };
@@ -222,19 +239,19 @@ form.FormBuilder.prototype.getData = function () {
  * @param name
  * @returns {*}
  */
-form.FormBuilder.prototype.getByName = function (name) {
-    return _.find(this._fields, function (field) {
+form.FormBuilder.prototype.getByName = function(name) {
+    return _.find(this._fields, function(field) {
         return field.name === this.getNameWithoutPrefix(name);
     }, this);
 };
 form.FormBuilder.prototype.find = form.FormBuilder.prototype.getByName;
-form.FormBuilder.prototype.getName = function () {
+form.FormBuilder.prototype.getName = function() {
     return this._name;
 };
-form.FormBuilder.prototype.setName = function (name) {
+form.FormBuilder.prototype.setName = function(name) {
     this._name = name;
 };
-form.FormBuilder.prototype.getFields = function () {
+form.FormBuilder.prototype.getFields = function() {
     return this._fields;
 };
 /**
@@ -242,10 +259,13 @@ form.FormBuilder.prototype.getFields = function () {
  * @param callback
  * @returns {*}
  */
-form.FormBuilder.prototype.validate = function (callback) {
-    var i = 0, length = this.getFields().length, cb, self = this, res = true;
+form.FormBuilder.prototype.validate = function(callback) {
+    var i = 0,
+        length = this.getFields().length,
+        cb, self = this,
+        res = true;
     this.setErrors(undefined);
-    cb = function (error, result) {
+    cb = function(error, result) {
         if (error) {
             self.addError(error);
             res = false;
@@ -259,10 +279,10 @@ form.FormBuilder.prototype.validate = function (callback) {
     return this.getFields()[i].validate(cb);
 
 };
-form.FormBuilder.prototype.validateSync = function () {
+form.FormBuilder.prototype.validateSync = function() {
     var valid = true;
     this.setErrors(undefined);
-    this.getFields().forEach(function (field) {
+    this.getFields().forEach(function(field) {
         if (!field.validateSync()) {
             this.addError(field.getError());
         }
@@ -272,38 +292,39 @@ form.FormBuilder.prototype.validateSync = function () {
     }
     return valid;
 };
-form.FormBuilder.prototype.addError = function (err) {
+form.FormBuilder.prototype.addError = function(err) {
     if (!this._errors) {
         this._errors = [];
     }
     this._errors.push(err);
 };
-form.FormBuilder.prototype.getErrors = function () {
+form.FormBuilder.prototype.getErrors = function() {
     return this._errors;
 };
-form.FormBuilder.prototype.setErrors = function (errors) {
+form.FormBuilder.prototype.setErrors = function(errors) {
     this._errors = errors;
 };
-form.FormBuilder.prototype.hasError = function () {
+form.FormBuilder.prototype.hasError = function() {
     return this._errors !== undefined;
 };
 /**
  *
  * @param body the body of a request
  */
-form.FormBuilder.prototype.bind = function (body) {
+form.FormBuilder.prototype.bind = function(body) {
     var model = this.getModel();
-    this.getFields().forEach(function (field) {
+    var modelProto = Object.getPrototypeOf(model);
+    this.getFields().forEach(function(field) {
         var name = field.getName();
         field.setData(body[name]);
-        if (model && model[name]) {
+        if (model[name] || modelProto[name]) {
             model[name] = field.getData();
         }
     }, this);
     this._bound = true;
     return this;
 };
-form.FormBuilder.prototype.isBound = function () {
+form.FormBuilder.prototype.isBound = function() {
     return this._bound;
 };
 
@@ -311,11 +332,9 @@ form.FormBuilder.prototype.isBound = function () {
  * @param {string} name name of the form
  * @returns {form.FormBuilder}
  */
-form.create = function (name) {
+form.create = function(name) {
     var f = new form.FormBuilder(name);
     f.addFieldLoader(new form.loaders.FieldLoader());
     f.addFieldLoader(new form.loaders.FieldTypeLoader());
     return f;
 };
-
-

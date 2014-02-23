@@ -16,7 +16,7 @@ var fields = exports;
  * @typedef {Object} FieldOption
  * @property {Array} validators an array of validators
  * @property {Object} attributes a hash of html tag attributes
- * @property {Object} default field's default value
+ * @property {Object} default default value for field
  */
 
 
@@ -289,6 +289,32 @@ fields.Check.prototype.getData = function() {
     return null;
 };
 /**
+ * Render as a checkbox, data can be true or false.
+ * @inheritDoc
+ * @extends {fields.Check}
+ */
+fields.Boolean = function(name,options) {
+    fields.Check.apply(this, [].slice.call(arguments));
+};
+util.inherits(fields.Boolean, fields.Check);
+fields.Boolean.prototype.getAttributes=function(){
+    var attr = fields.Check.prototype.getAttributes.apply(this,[].slice.call(arguments));
+    attr.value=true;
+    return attr;
+};
+fields.Boolean.prototype.setData = function(data) {
+    if (data) {
+        this._data = true;
+        this.options.attributes.checked = "checked";
+    } else {
+        this._data = false;
+        delete this.options.attributes.checked;
+    }
+};
+fields.Boolean.prototype.getData = function() {
+    return this._data;
+}
+/**
  *
  * @constructor
  */
@@ -308,7 +334,7 @@ fields.Label.prototype.getAttributes = function() {
     return _.extend({}, this.options.attributes, this.defaults);
 };
 fields.Label.prototype.toHTML = function() {
-    var name = utils.returnDefined(this.options.value, this.name, "");
+    var name = utils.returnDefined(this.options.value,this.options.attributes.value,this.name, "");
     //if no name , dont return a label.
     if (name.trim()) {
         return this.template({
@@ -600,9 +626,7 @@ fields.Repeated = function(name, options) {
     fields.Base.apply(this, [].slice.call(arguments));
     this.type = "repeated";
 };
-
-fields.Repeated.prototype = Object.create(fields.Base.prototype);
-fields.Repeated.prototype.constructor = fields.Repeated;
+util.inherits(fields.Repeated, fields.Base);
 
 fields.Repeated.prototype.setData = function(data) {
     this._data = data instanceof Array ? data : [data];

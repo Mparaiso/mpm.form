@@ -1,6 +1,8 @@
 mpm.form
 ========
 
+http://mparaiso.github.io/mpm.form/doc/
+
 [![NPM](https://nodei.co/npm/mpm.form.png?downloads=true)](https://nodei.co/npm/mpm.form/)
 
 
@@ -15,18 +17,6 @@ A form library for node.js
 With __mpm.form__ , js developpers no longer need to write their forms and validate them by hand. 
 mpm.form handles form creation , request and model binding ,  validation and html rendering of
 form widgets.
-
-####ChangeLog
-
-- 0.0.3  repeated field now works as expected
-- 0.0.25 form can now validate sync
-- 0.0.24 api changed , form.createBuilder is now __form.create__
-- 0.0.23 api changed , see basic usage
-- 0.0.22 added fields.Repeated
-- 0.0.20 added fields.Email
-- 0.0.19 fields.Date && fields.Time added
-- 0.0.17 formBuilder.add arguments are now (name,formType,options) instead of (formType,name,options)
-
 
 ####INSTALLATION
 
@@ -128,5 +118,17 @@ if the form is valid ,we can save the model to the db
 ####SUPPORTED VALIDATORS : 
 
 see : https://github.com/Mparaiso/mpm.validation for a list of supported validators
+
+####ChangeLog
+
+- 0.0.3  repeated field now works as expected
+- 0.0.25 form can now validate sync
+- 0.0.24 api changed , form.createBuilder is now __form.create__
+- 0.0.23 api changed , see basic usage
+- 0.0.22 added fields.Repeated
+- 0.0.20 added fields.Email
+- 0.0.19 fields.Date && fields.Time added
+- 0.0.17 formBuilder.add arguments are now (name,formType,options) instead of (formType,name,options)
+
 
 

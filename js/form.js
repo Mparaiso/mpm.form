@@ -149,9 +149,9 @@ form.FormBuilder.prototype.resolveField = function(name, type, options) {
 };
 /**
  *
- * @param type
- * @param name
- * @param options
+ * @param {string} name field name
+ * @param {string} type form type
+ * @param {Object} options
  * @returns {*}
  */
 form.FormBuilder.prototype.add = function(name, type, options) {
@@ -162,7 +162,7 @@ form.FormBuilder.prototype.add = function(name, type, options) {
         _field = this.resolveField(name, type, options);
     }
     if (_field !== undefined) {
-        field.getOptions().attributes.id = this.getPrefix() + _field.getName();
+        _field.getOptions().attributes.id = this.getPrefix() + _field.getName();
         this.getFields().push(_field);
     }
     return this;

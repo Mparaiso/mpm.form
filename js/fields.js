@@ -1,4 +1,4 @@
-/*jslint unparam:true,todo:false*/
+/*jslint stupid:true,eqeq:true,node:true,es5:true,white:true,plusplus:true,nomen:true,unparam:true,devel:true,regexp:true */
 "use strict";
 var _ = require('underscore');
 var util = require('util');
@@ -67,6 +67,14 @@ fields.Base.prototype.getAttributes = function() {
     attrs.type = utils.returnDefined(attrs.type, this.type);
     return attrs;
 };
+fields.Base.prototype.setAttributes=function(attributes){
+    _.extend(this.options.attributes,attributes);
+    return this;
+};
+fields.Base.prototype.setAttribute=function(name,value){
+    //this.options.attributes[name]=value;
+    return this;
+};
 fields.Base.prototype.setParent = function(parent) {
     this._parent = parent;
 };
@@ -89,10 +97,11 @@ fields.Base.prototype.getData = function() {
  * @param {Function} callback
  */
 fields.Base.prototype.validate = function(callback) {
+    var self,chain;
     this.setError(undefined);
-    var self = this;
+    self = this;
     this.options.validators = this.options.validators instanceof Array ? this.options.validators : [this.options.validators];
-    var chain = validation.Chain.apply(this, _.compact(this.options.validators)); //compact will remove potential undefined values
+    chain = validation.Chain.apply(this, _.compact(this.options.validators)); //compact will remove potential undefined values
     return chain.validate(this.getData(), function(err, result) {
         if (err) {
             self.setError(err);
@@ -139,7 +148,8 @@ fields.Base.prototype.toJSON = function() {
  *
  * @returns {string}
  */
-fields.Base.prototype.toHTML = function() {
+fields.Base.prototype.toHTML = function(attributes) {
+    this.setAttributes(attributes);
     return this.template({
         label: this.getLabel().toHTML(),
         attributes: this.renderAttributes(this.getAttributes())
@@ -192,7 +202,7 @@ fields.Text = function(name, options) {
  *
  * @type {fields.Base}
  */
-util.inherits(fields.Text, fields.Base);
+fields.Text.prototype=Object.create(fields.Base.prototype);
 /**
  * Email field type
  * @constructor
@@ -202,7 +212,7 @@ fields.Email = function(name, options) {
     fields.Text.apply(this, [].slice.apply(arguments));
     this.type = "email";
 };
-util.inherits(fields.Email, fields.Text);
+fields.Email.prototype=Object.create(fields.Text.prototype);
 /**
  * date form type
  */
@@ -313,7 +323,7 @@ fields.Boolean.prototype.setData = function(data) {
 };
 fields.Boolean.prototype.getData = function() {
     return this._data;
-}
+};
 /**
  *
  * @constructor
@@ -333,7 +343,8 @@ fields.Label.prototype.constructor = fields.Base;
 fields.Label.prototype.getAttributes = function() {
     return _.extend({}, this.options.attributes, this.defaults);
 };
-fields.Label.prototype.toHTML = function() {
+fields.Label.prototype.toHTML = function(attributes) {
+    this.setAttributes(attributes);
     var name = utils.returnDefined(this.options.value,this.options.attributes.value,this.name, "");
     //if no name , dont return a label.
     if (name.trim()) {
@@ -402,15 +413,16 @@ fields.Option = function() {
 fields.Option.prototype = new fields.Base();
 fields.Option.prototype.constructor = fields.Base;
 fields.Option.fromData = function(data) {
-    var option;
-    var attr = utils.returnDefined(data.attributes, {});
+    var attr,option;
+    attr = utils.returnDefined(data.attributes, {});
     option = new fields.Option(data.key, {
         attributes: attr
     });
     option.options.attributes.value = data.value;
     return option;
 };
-fields.Option.prototype.toHTML = function() {
+fields.Option.prototype.toHTML = function(attributes) {
+    this.setAttributes(attributes);
     return this.template({
         attributes: this.renderAttributes(this.getAttributes()),
         label: this.name
@@ -476,7 +488,8 @@ fields.Select.prototype.getAttributes = function() {
     delete attrs.value;
     return attrs;
 };
-fields.Select.prototype.toHTML = function() {
+fields.Select.prototype.toHTML = function(attributes) {
+    this.setAttributes(attributes);
     return this.template({
         label: utils.returnDefined(this.options.label, this.name),
         labelAttrs: this.renderAttributes(this.options.labelAttributes || {}),
@@ -518,7 +531,8 @@ fields.CheckboxGroup.prototype.constructor = fields.Choices;
  *
  * @returns {string}
  */
-fields.CheckboxGroup.prototype.toHTML = function() {
+fields.CheckboxGroup.prototype.toHTML = function(attributes) {
+    this.setAttributes(attributes);
     return this.getChoices().map(function(o) {
         var check;
         check = fields.Check.fromData(o);
@@ -566,7 +580,8 @@ fields.RadioGroup.prototype.constructor = fields.Choices;
  *
  * @returns {string}
  */
-fields.RadioGroup.prototype.toHTML = function() {
+fields.RadioGroup.prototype.toHTML = function(attributes) {
+    this.setAttributes(attributes);
     return this.getChoices().map(function(choice) {
         var radio = fields.Radio.fromData(choice);
         radio.name = this.name;
@@ -608,16 +623,15 @@ fields.TextArea = function(name, options) {
 };
 fields.TextArea.prototype = Object.create(fields.Base.prototype);
 fields.TextArea.prototype.constructor = fields.Base;
-fields.TextArea.prototype.toHTML = function() {
+fields.TextArea.prototype.toHTML = function(attributes) {
+    this.setAttributes(attributes);
     return this.template({
         label: this.getLabel().toHTML(),
         attributes: this.renderAttributes(this.getAttributes()),
         value: this._data
     });
 };
-fields.TextArea.prototype.toString=function(){
-    return "[object fields.TextArea]";
-};
+
 /**
  * Repeated field type
  * @extends {fields.Base}
@@ -647,7 +661,8 @@ fields.Repeated.prototype.validate = function(callback) {
     fields.Base.prototype.validate.call(this, callback);
 };
 
-fields.Repeated.prototype.toHTML = function() {
+fields.Repeated.prototype.toHTML = function(attributes) {
+    this.setAttributes(attributes);
     var a, b;
     a = new fields.Text(this.name, this.options);
     b = new fields.Text(this.name, this.options);

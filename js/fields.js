@@ -9,7 +9,7 @@ var validation = require('mpm.validation');
  * @namespace
  * @type {Object}
  */
-var fields = exports;
+var fields = {};
 
 /**
  * FieldOption type
@@ -372,7 +372,7 @@ fields.Button = function() {
     this.options.label = "";
     this.type = "button";
 };
-util.inherits(fields.Button, fields.Text);
+fields.Button.prototype=Object.create(fields.Text.prototype);
 
 /**
  *
@@ -382,13 +382,13 @@ fields.Submit = function() {
     fields.Button.apply(this, [].slice.apply(arguments));
     this.type = "submit";
 };
-util.inherits(fields.Submit, fields.Button);
+fields.Submit.prototype=Object.create(fields.Button.prototype);
 
 fields.Reset = function() {
     fields.Button.apply(this, [].slice.apply(arguments));
     this.type = "reset";
 };
-util.inherits(fields.Button, fields.Reset);
+fields.Reset.prototype=Object.create(fields.Button.prototype);
 
 /**
  *
@@ -606,7 +606,7 @@ fields.TextArea = function(name, options) {
     this.type = "textarea";
     this.template = _.template('<%=label%> <textarea <%=attributes%>><%=value%></textarea>');
 };
-fields.TextArea.prototype = new fields.Base();
+fields.TextArea.prototype = Object.create(fields.Base.prototype);
 fields.TextArea.prototype.constructor = fields.Base;
 fields.TextArea.prototype.toHTML = function() {
     return this.template({
@@ -615,7 +615,9 @@ fields.TextArea.prototype.toHTML = function() {
         value: this._data
     });
 };
-
+fields.TextArea.prototype.toString=function(){
+    return "[object fields.TextArea]";
+};
 /**
  * Repeated field type
  * @extends {fields.Base}
@@ -661,3 +663,5 @@ fields.Repeated.prototype.toHTML = function() {
     }
     return a.toHTML() + b.toHTML();
 };
+
+module.exports=fields;

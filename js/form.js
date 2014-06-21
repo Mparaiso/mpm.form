@@ -10,7 +10,7 @@ var fields = require('./fields');
 /**
  * @namespace
  */
-var form = exports;
+var form = {};
 
 /**
  * Field loading strategies
@@ -162,7 +162,7 @@ form.FormBuilder.prototype.add = function(name, type, options) {
         _field = this.resolveField(name, type, options);
     }
     if (_field !== undefined) {
-        _field.getOptions().attributes.id = this.getPrefix() + _field.getName();
+        field.getOptions().attributes.id = this.getPrefix() + _field.getName();
         this.getFields().push(_field);
     }
     return this;
@@ -338,3 +338,5 @@ form.create = function(name) {
     f.addFieldLoader(new form.loaders.FieldTypeLoader());
     return f;
 };
+
+module.exports=form;

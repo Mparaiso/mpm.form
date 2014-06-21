@@ -45,7 +45,6 @@ Let's create a form for blog posts
 	 
 	var form = require('mpm.form'),
 	    validation = form.validation;
-	// FormBuilder.add(fieldname,fieldtype,fieldoptions)
 	var postForm = form.create("post_form"/*the form name*/)
         .add('title', 'text', {
             validators: [validation.Required(), validation.Length(3, 200)]})

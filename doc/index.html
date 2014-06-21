@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>JSDoc: Index</title>
-    
+
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
     <!--[if lt IE 9]>
@@ -16,9 +16,9 @@
 <body>
 
 <div id="main">
-    
+
     <h1 class="page-title">Index</h1>
-    
+
     
 
 
@@ -40,6 +40,84 @@
 
 
 
+    <section>
+        <article><h1>mpm.form</h1><p><a href="https://nodei.co/npm/mpm.form/"><img src="https://nodei.co/npm/mpm.form.png?downloads=true" alt="NPM"></a></p>
+<p><a href="https://travis-ci.org/Mparaiso/mpm.form"><img src="https://travis-ci.org/Mparaiso/mpm.form.png?branch=master" alt="Build Status"></a></p>
+<p>version: 0.0.5</p>
+<p>author: mparaiso <a href="&#109;&#97;&#x69;&#x6c;&#x74;&#x6f;&#58;&#x6d;&#112;&#x61;&#x72;&#97;&#105;&#x73;&#x6f;&#64;&#x6f;&#110;&#108;&#105;&#x6e;&#101;&#x2e;&#x66;&#x72;">&#x6d;&#112;&#x61;&#x72;&#97;&#105;&#x73;&#x6f;&#64;&#x6f;&#110;&#108;&#105;&#x6e;&#101;&#x2e;&#x66;&#x72;</a></p>
+<p>A form library for node.js</p>
+<p>With <strong>mpm.form</strong> , js developpers no longer need to write their forms and validate them by hand. 
+mpm.form handles form creation , request and model binding ,  validation and html rendering of
+form widgets.</p>
+<h4>ChangeLog</h4><ul>
+<li>0.0.3  repeated field now works as expected</li>
+<li>0.0.25 form can now validate sync</li>
+<li>0.0.24 api changed , form.createBuilder is now <strong>form.create</strong></li>
+<li>0.0.23 api changed , see basic usage</li>
+<li>0.0.22 added fields.Repeated</li>
+<li>0.0.20 added fields.Email</li>
+<li>0.0.19 fields.Date &amp;&amp; fields.Time added</li>
+<li>0.0.17 formBuilder.add arguments are now (name,formType,options) instead of (formType,name,options)</li>
+</ul>
+<h4>INSTALLATION</h4><p>in package.json file : </p>
+<pre class="prettyprint source"><code>"dependencies":{
+    "mpm.form":"*"
+}</code></pre><h4>BASIC USAGE</h4><p>Given a blog application , users need to write posts.
+Let's create a form for blog posts</p>
+<pre class="prettyprint source"><code>var form = require('mpm.form'),
+    validation = form.validation;
+var postForm = form.create("post_form"/*the form name*/)
+    .add('title', 'text', {
+        validators: [validation.Required(), validation.Length(3, 200)]})
+    .add('excerpt', 'textarea', {attributes: {rows: 3},
+        validators: validation.Required()})
+    .add('content', 'textarea', {attributes: {rows: 10},
+        validators: validation.Required()})
+    .add("allow_comments",'checkbox',{label:'allow comments',attributes:{value:"allow_comments"}})
+    .add('reset', 'reset', {attributes: {value: 'reset'}})
+    .add('create', 'submit', {attributes: {value: 'create'}, validators: validation.Required()});</code></pre><p>Render the fields as HTML , just call formBuilder.toHTML()</p>
+<pre class="prettyprint source"><code>postForm.toHTML();</code></pre><p>or get all form datas ,and implement a custom renderer for your template engine :</p>
+<pre class="prettyprint source"><code>postForm.toJSON();</code></pre><p>Add initial form data to the formBuidlder (from the a database for instance ):</p>
+<pre class="prettyprint source"><code>var model = new ModelFromDB({content:'some content',title:"some title"});
+postForm.setModel(model);</code></pre><p>We want to bind our form to the body of a post request</p>
+<p>with expressjs , one would write :</p>
+<pre class="prettyprint source"><code>if(request.method==="POST"){
+    postForm.bind(request.body);
+}</code></pre><p>postForm now contains request.body datas, the model has been modified too</p>
+<p>validate the form : </p>
+<pre class="prettyprint source"><code>postForm.validate(function(error,isValid){
+    ...
+});</code></pre><p>isValid  will be true if the form is valid</p>
+<p>You can also validate the form synchronously, if all validators are synchronous. Dont use it if a custom validator involves some I/O task :</p>
+<pre class="prettyprint source"><code>var isValid = postForm.validateSync()
+
+// Dont use that if one validator is Async,
+// for instance a validator that would check if a field is unique
+// in the database</code></pre><p>Get form errors : </p>
+<pre class="prettyprint source"><code>postForm.getErrors(); </code></pre><p>will yield an array of Error objects
+if the form is valid ,we can save the model to the db</p>
+<pre class="prettyprint source"><code>model.save(callback)</code></pre><h4>SUPPORTED FIELDS</h4><ul>
+<li>text: input of type text</li>
+<li>email: input of type email</li>
+<li>date: input of type date</li>
+<li>time: input of type time</li>
+<li>password: input of type password</li>
+<li>hidden: input of type hidden</li>
+<li>repeated  : 2 input fields that must have the same value (for password confirmation for instance )</li>
+<li>checkbox: input of type check</li>
+<li>radio: input of type radio</li>
+<li>button: input of type button</li>
+<li>submit: input of type submit</li>
+<li>reset: input of type reset</li>
+<li>textarea: textarea widget</li>
+<li>select: a dropdown list of options</li>
+<li>checkboxgroup: a group of checkboxes</li>
+<li>radiogroup: a group of radio widgets</li>
+<li>label: a label</li>
+</ul>
+<h4>SUPPORTED VALIDATORS :</h4><p>see : https://github.com/Mparaiso/mpm.validation for a list of supported validators</p></article>
+    </section>
+
 
 
 
@@ -48,13 +126,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="fields.Base.html">Base</a></li><li><a href="fields.Button.html">Button</a></li><li><a href="fields.Check.html">Check</a></li><li><a href="fields.CheckboxGroup.html">CheckboxGroup</a></li><li><a href="fields.Choices.html">Choices</a></li><li><a href="fields.Email.html">Email</a></li><li><a href="fields.Hidden.html">Hidden</a></li><li><a href="fields.Label.html">Label</a></li><li><a href="fields.Option.html">Option</a></li><li><a href="fields.Password.html">Password</a></li><li><a href="fields.Radio.html">Radio</a></li><li><a href="fields.RadioGroup.html">RadioGroup</a></li><li><a href="fields.Select.html">Select</a></li><li><a href="fields.Submit.html">Submit</a></li><li><a href="fields.Text.html">Text</a></li><li><a href="form.FormBuilder.html">FormBuilder</a></li><li><a href="form.loaders.FieldLoader.html">FieldLoader</a></li></ul><h3>Namespaces</h3><ul><li><a href="fields.html">fields</a></li><li><a href="form.loaders.html">loaders</a></li><li><a href="utils.html">utils</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Modules</h3><ul><li><a href="module-form.html">form</a></li></ul><h3>Classes</h3><ul><li><a href="fields.Base.html">Base</a></li><li><a href="fields.Button.html">Button</a></li><li><a href="fields.Check.html">Check</a></li><li><a href="fields.CheckboxGroup.html">CheckboxGroup</a></li><li><a href="fields.Choices.html">Choices</a></li><li><a href="fields.Email.html">Email</a></li><li><a href="fields.Hidden.html">Hidden</a></li><li><a href="fields.Label.html">Label</a></li><li><a href="fields.Option.html">Option</a></li><li><a href="fields.Password.html">Password</a></li><li><a href="fields.Radio.html">Radio</a></li><li><a href="fields.RadioGroup.html">RadioGroup</a></li><li><a href="fields.Select.html">Select</a></li><li><a href="fields.Submit.html">Submit</a></li><li><a href="fields.Text.html">Text</a></li><li><a href="module-form-form.FormBuilder.html">FormBuilder</a></li><li><a href="module-form-form.loaders.FieldLoader.html">FieldLoader</a></li><li><a href="module-form-form.loaders.FieldTypeLoader.html">FieldTypeLoader</a></li></ul><h3>Namespaces</h3><ul><li><a href="fields.html">fields</a></li><li><a href="module-form-form.html">form</a></li><li><a href="module-form-form.loaders.html">loaders</a></li><li><a href="utils.html">utils</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha2</a> on Sun Feb 16 2014 01:48:28 GMT+0100 (Paris, Madrid)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha8</a> on Sat Jun 21 2014 23:32:51 GMT+0200 (Paris, Madrid (heure d’été))
 </footer>
 
 <script> prettyPrint(); </script>

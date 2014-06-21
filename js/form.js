@@ -99,6 +99,7 @@ form.loaders.FieldTypeLoader.prototype.load = function(name, Type, options) {
 
 /**
  * Main Form class to build HTML forms
+ * @type {form.FormBuilder}
  * @constructor
  */
 form.FormBuilder = function(name) {

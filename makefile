@@ -1,5 +1,5 @@
 test:
-	@node_modules/.bin/mocha -R spec
+	@npm test
 #continuous testing
 ct:
 	@bin/ct.sh
@@ -13,6 +13,7 @@ push: commit
 publish:
 	@make test
 	@npm publish
-build:
-	@node_modules/.bin/tsc typescript-sources/mpm.form.ts --outDir js --module commonjs --declaration --sourcemap --target ES5
-.PHONY: test install commit push
+doc:
+	@npm run doc
+.PHONY: test install commit push doc
+

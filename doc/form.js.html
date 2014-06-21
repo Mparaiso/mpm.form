@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: c:/development/categories/node/mpm.form/js/form.js</title>
-    
+    <title>JSDoc: Source: form.js</title>
+
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
     <!--[if lt IE 9]>
@@ -16,22 +16,28 @@
 <body>
 
 <div id="main">
-    
-    <h1 class="page-title">Source: c:/development/categories/node/mpm.form/js/form.js</h1>
-    
+
+    <h1 class="page-title">Source: form.js</h1>
+
     
 
 
     
     <section>
         <article>
-            <pre class="prettyprint source"><code>"use strict";
+            <pre class="prettyprint source linenums"><code>"use strict";
 var util = require('util');
 var _ = require('underscore');
 var utils = require('./utils');
 var validation = require('mpm.validation');
 var fields = require('./fields');
-var form = exports;
+
+/** @module  form */
+
+/**
+ * @namespace
+ */
+var form = {};
 
 /**
  * Field loading strategies
@@ -42,16 +48,17 @@ form.loaders = {};
  * load fields by string name,ex :"email"
  * @constructor
  */
-form.loaders.FieldLoader = function () {
+form.loaders.FieldLoader = function() {
+    return;
 };
 /**
  * Load field
  * @param type
  * @param name
  * @param options
- * @returns {*}
+ * @returns {fields.Base}
  */
-form.loaders.FieldLoader.prototype.load = function (name, type, options) {
+form.loaders.FieldLoader.prototype.load = function(name, type, options) {
     switch (type) {
         case "text":
             return new fields.Text(name, options);
@@ -87,35 +94,51 @@ form.loaders.FieldLoader.prototype.load = function (name, type, options) {
             return new fields.Submit(name, options);
         case "repeated":
             return new fields.Repeated(name, options);
+        case "boolean":
+        case "bool":
+            return new fields.Boolean(name, options);
+        case "label":
+            return new fields.Label(name,options);
     }
 };
 
 /**
  * load fields by actual type: ex: fields.Email
+ *
+ * @constructor
  */
-form.loaders.FieldTypeLoader = function () {
+form.loaders.FieldTypeLoader = function() {
+    return;
 };
-form.loaders.FieldTypeLoader.prototype.load = function (name, type, options) {
-    if (_.contains(fields, type)) {
-        return new type(name, options);
+/**
+ * [load description]
+ * @param  {string} name
+ * @param  {fields.Base} Type
+ * @param  {object} options
+ * @return {void|fields.Base}
+ */
+form.loaders.FieldTypeLoader.prototype.load = function(name, Type, options) {
+    if (_.contains(fields, Type)) {
+        return new Type(name, options);
     }
 };
 
 
 /**
- *
+ * Main Form class to build HTML forms
+ * @type {form.FormBuilder}
  * @constructor
  */
-form.FormBuilder = function (name) {
+form.FormBuilder = function(name) {
     this._fields = [];
     this.fieldLoaders = [];
     this._name = name || 'form';
     this._bound = false;
 };
-form.FormBuilder.prototype.getName = function () {
+form.FormBuilder.prototype.getName = function() {
     return this._name;
 };
-form.FormBuilder.prototype.getPrefix = function () {
+form.FormBuilder.prototype.getPrefix = function() {
     return this._name + "_";
 };
 /**
@@ -123,7 +146,7 @@ form.FormBuilder.prototype.getPrefix = function () {
  * @param name
  * @returns {*}
  */
-form.FormBuilder.prototype.getNameWithoutPrefix = function (name) {
+form.FormBuilder.prototype.getNameWithoutPrefix = function(name) {
     return name.replace(this.getPrefix(), "");
 };
 
@@ -131,7 +154,7 @@ form.FormBuilder.prototype.getNameWithoutPrefix = function (name) {
  *
  * @param fieldLoader
  */
-form.FormBuilder.prototype.addFieldLoader = function (fieldLoader) {
+form.FormBuilder.prototype.addFieldLoader = function(fieldLoader) {
     this.fieldLoaders.push(fieldLoader);
 };
 /**
@@ -139,26 +162,27 @@ form.FormBuilder.prototype.addFieldLoader = function (fieldLoader) {
  * @param type
  * @param name
  * @param options
- * @returns {*}
+ * @returns {fields.Base}
  */
-form.FormBuilder.prototype.resolveField = function (name, type, options) {
-    var i = 0, field;
+form.FormBuilder.prototype.resolveField = function(name, type, options) {
+    var i = 0,
+        field;
     while (!field &amp;&amp; i &lt; this.fieldLoaders.length) {
         field = this.fieldLoaders[i].load(name, type, options);
         i += 1;
     }
-    if (field != undefined) {
+    if (field !== undefined) {
         return field;
     }
 };
 /**
  *
- * @param type
- * @param name
- * @param options
+ * @param {string} name field name
+ * @param {string} type form type
+ * @param {Object} options
  * @returns {*}
  */
-form.FormBuilder.prototype.add = function (name, type, options) {
+form.FormBuilder.prototype.add = function(name, type, options) {
     var _field;
     if (name instanceof fields.Base) {
         _field = name;
@@ -171,7 +195,7 @@ form.FormBuilder.prototype.add = function (name, type, options) {
     }
     return this;
 };
-form.FormBuilder.prototype.remove = function (name) {
+form.FormBuilder.prototype.remove = function(name) {
     var fields, field = this.getByName(name);
     if (field) {
         fields = this.getFields();
@@ -180,14 +204,14 @@ form.FormBuilder.prototype.remove = function (name) {
     return this;
 };
 /**
- *
+ * render form
  * @param {Function} iterator
  * @returns {string}
  */
-form.FormBuilder.prototype.toHTML = function (iterator) {
+form.FormBuilder.prototype.toHTML = function(iterator) {
     var _iterator = iterator;
     if (_.isUndefined(_iterator)) {
-        _iterator = function (w) {
+        _iterator = function(w) {
             return w.toHTML();
         };
     }
@@ -197,8 +221,8 @@ form.FormBuilder.prototype.toHTML = function (iterator) {
  *
  * @returns {Array}
  */
-form.FormBuilder.prototype.toJSON = function () {
-    return this._fields.map(function (w) {
+form.FormBuilder.prototype.toJSON = function() {
+    return this._fields.map(function(w) {
         return w.toJSON();
     });
 };
@@ -206,7 +230,7 @@ form.FormBuilder.prototype.toJSON = function () {
  *
  * @param value
  */
-form.FormBuilder.prototype.setModel = function (value) {
+form.FormBuilder.prototype.setModel = function(value) {
     this._model = value;
     this.setData(this.getModel());
     return this;
@@ -215,15 +239,15 @@ form.FormBuilder.prototype.setModel = function (value) {
  *
  * @returns {*}
  */
-form.FormBuilder.prototype.getModel = function () {
+form.FormBuilder.prototype.getModel = function() {
     return this._model;
 };
 /**
  *
  * @param data
  */
-form.FormBuilder.prototype.setData = function (data) {
-    this._fields.forEach(function (field, i) {
+form.FormBuilder.prototype.setData = function(data) {
+    this._fields.forEach(function(field, i) {
         this._fields[i].setData(data[this._fields[i].name]);
     }, this);
 };
@@ -231,10 +255,10 @@ form.FormBuilder.prototype.setData = function (data) {
  *
  * @returns {{}}
  */
-form.FormBuilder.prototype.getData = function () {
+form.FormBuilder.prototype.getData = function() {
     var datas = {};
-    this._fields.forEach(function (w) {
-        datas[this.nameFromPrefixedName(w.name)] = w.getData();
+    this._fields.forEach(function(w) {
+        datas[w.name] = w.getData();
     }, this);
     return datas;
 };
@@ -243,19 +267,19 @@ form.FormBuilder.prototype.getData = function () {
  * @param name
  * @returns {*}
  */
-form.FormBuilder.prototype.getByName = function (name) {
-    return _.find(this._fields, function (field) {
+form.FormBuilder.prototype.getByName = function(name) {
+    return _.find(this._fields, function(field) {
         return field.name === this.getNameWithoutPrefix(name);
     }, this);
 };
 form.FormBuilder.prototype.find = form.FormBuilder.prototype.getByName;
-form.FormBuilder.prototype.getName = function () {
+form.FormBuilder.prototype.getName = function() {
     return this._name;
 };
-form.FormBuilder.prototype.setName = function (name) {
+form.FormBuilder.prototype.setName = function(name) {
     this._name = name;
 };
-form.FormBuilder.prototype.getFields = function () {
+form.FormBuilder.prototype.getFields = function() {
     return this._fields;
 };
 /**
@@ -263,10 +287,13 @@ form.FormBuilder.prototype.getFields = function () {
  * @param callback
  * @returns {*}
  */
-form.FormBuilder.prototype.validate = function (callback) {
-    var i = 0, length = this.getFields().length, cb, self = this, res = true;
+form.FormBuilder.prototype.validate = function(callback) {
+    var i = 0,
+        length = this.getFields().length,
+        cb, self = this,
+        res = true;
     this.setErrors(undefined);
-    cb = function (error, result) {
+    cb = function(error, result) {
         if (error) {
             self.addError(error);
             res = false;
@@ -280,52 +307,67 @@ form.FormBuilder.prototype.validate = function (callback) {
     return this.getFields()[i].validate(cb);
 
 };
-form.FormBuilder.prototype.addError = function (err) {
+form.FormBuilder.prototype.validateSync = function() {
+    var valid = true;
+    this.setErrors(undefined);
+    this.getFields().forEach(function(field) {
+        if (!field.validateSync()) {
+            this.addError(field.getError());
+        }
+    }, this);
+    if (this.hasError()) {
+        valid = false;
+    }
+    return valid;
+};
+form.FormBuilder.prototype.addError = function(err) {
     if (!this._errors) {
         this._errors = [];
     }
     this._errors.push(err);
 };
-form.FormBuilder.prototype.getErrors = function () {
-    return this._errors
+form.FormBuilder.prototype.getErrors = function() {
+    return this._errors;
 };
-form.FormBuilder.prototype.setErrors = function (errors) {
-    this._errors = errors
+form.FormBuilder.prototype.setErrors = function(errors) {
+    this._errors = errors;
 };
-form.FormBuilder.prototype.hasError = function () {
+form.FormBuilder.prototype.hasError = function() {
     return this._errors !== undefined;
 };
 /**
  *
  * @param body the body of a request
  */
-form.FormBuilder.prototype.bind = function (body) {
+form.FormBuilder.prototype.bind = function(body) {
     var model = this.getModel();
-    this.getFields().forEach(function (field) {
+    var modelProto = model ? Object.getPrototypeOf(model) : null;
+    this.getFields().forEach(function(field) {
         var name = field.getName();
         field.setData(body[name]);
-        if (model[name]) {
+        if (model &amp;&amp; (model[name] || modelProto[name])) {
             model[name] = field.getData();
         }
     }, this);
     this._bound = true;
     return this;
 };
-form.FormBuilder.prototype.isBound = function () {
+form.FormBuilder.prototype.isBound = function() {
     return this._bound;
 };
+
 /**
- *
+ * @param {string} name name of the form
  * @returns {form.FormBuilder}
  */
-form.create = function (name) {
+form.create = function(name) {
     var f = new form.FormBuilder(name);
     f.addFieldLoader(new form.loaders.FieldLoader());
     f.addFieldLoader(new form.loaders.FieldTypeLoader());
     return f;
 };
 
-
+module.exports=form;
 </code></pre>
         </article>
     </section>
@@ -336,13 +378,13 @@ form.create = function (name) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="fields.Base.html">Base</a></li><li><a href="fields.Button.html">Button</a></li><li><a href="fields.Check.html">Check</a></li><li><a href="fields.CheckboxGroup.html">CheckboxGroup</a></li><li><a href="fields.Choices.html">Choices</a></li><li><a href="fields.Email.html">Email</a></li><li><a href="fields.Hidden.html">Hidden</a></li><li><a href="fields.Label.html">Label</a></li><li><a href="fields.Option.html">Option</a></li><li><a href="fields.Password.html">Password</a></li><li><a href="fields.Radio.html">Radio</a></li><li><a href="fields.RadioGroup.html">RadioGroup</a></li><li><a href="fields.Select.html">Select</a></li><li><a href="fields.Submit.html">Submit</a></li><li><a href="fields.Text.html">Text</a></li><li><a href="form.FormBuilder.html">FormBuilder</a></li><li><a href="form.loaders.FieldLoader.html">FieldLoader</a></li></ul><h3>Namespaces</h3><ul><li><a href="fields.html">fields</a></li><li><a href="form.loaders.html">loaders</a></li><li><a href="utils.html">utils</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Modules</h3><ul><li><a href="module-form.html">form</a></li></ul><h3>Classes</h3><ul><li><a href="fields.Base.html">Base</a></li><li><a href="fields.Button.html">Button</a></li><li><a href="fields.Check.html">Check</a></li><li><a href="fields.CheckboxGroup.html">CheckboxGroup</a></li><li><a href="fields.Choices.html">Choices</a></li><li><a href="fields.Email.html">Email</a></li><li><a href="fields.Hidden.html">Hidden</a></li><li><a href="fields.Label.html">Label</a></li><li><a href="fields.Option.html">Option</a></li><li><a href="fields.Password.html">Password</a></li><li><a href="fields.Radio.html">Radio</a></li><li><a href="fields.RadioGroup.html">RadioGroup</a></li><li><a href="fields.Select.html">Select</a></li><li><a href="fields.Submit.html">Submit</a></li><li><a href="fields.Text.html">Text</a></li><li><a href="module-form-form.FormBuilder.html">FormBuilder</a></li><li><a href="module-form-form.loaders.FieldLoader.html">FieldLoader</a></li><li><a href="module-form-form.loaders.FieldTypeLoader.html">FieldTypeLoader</a></li></ul><h3>Namespaces</h3><ul><li><a href="fields.html">fields</a></li><li><a href="module-form-form.html">form</a></li><li><a href="module-form-form.loaders.html">loaders</a></li><li><a href="utils.html">utils</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha2</a> on Sun Feb 16 2014 01:48:28 GMT+0100 (Paris, Madrid)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha8</a> on Sat Jun 21 2014 23:32:51 GMT+0200 (Paris, Madrid (heure d’été))
 </footer>
 
 <script> prettyPrint(); </script>

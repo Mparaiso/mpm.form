@@ -12,7 +12,8 @@
   },
   "devDependencies":{
     "mocha":"*",
-    "chai":"*"
+    "chai":"*",
+    "jsdoc":"~3.3.0"
   },
   "repository": {
     "type": "git",
@@ -27,5 +28,9 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Mparaiso/mpm.form/issues"
+  },
+  "scripts":{
+      "doc":"node node_modules/jsdoc/jsdoc.js -r -d doc  js README.md",
+      "test":"node node_modules/mocha/bin/_mocha -R spec"
   }
 }

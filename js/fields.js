@@ -83,14 +83,22 @@ fields.Base.prototype.setParent = function(parent) {
  * @param data
  */
 fields.Base.prototype.setData = function(data) {
-    this._data = data;
+    var from=_.identity;
+    if(this.options.transform && this.options.transform.from instanceof Function){
+        from=this.options.transform.from;
+    }
+    this._data = from(data);
 };
 /**
  *
  * @returns {*}
  */
 fields.Base.prototype.getData = function() {
-    return this._data;
+    var to=_.identity;
+    if(this.options.transform && this.options.transform.to instanceof Function){
+        to=this.options.transform.to;
+    }
+    return to(this._data);
 };
 /**
  * Execute all validators on the field data.

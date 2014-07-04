@@ -32,7 +32,21 @@ describe('form.fields', function() {
                 done();
             });
         });
-
+        it('transform should take and return an array',function  () {
+            var transform={
+                from:function  (array) {
+                    return array.join("\n");
+                },
+                to:function  (string) {
+                    return string.split("\n");
+                }
+            }
+            var field=new fields.Base("base",{transform:transform});
+            var data =['some','data'];
+            field.setData(data);
+            assert.equal(field._data,'some\ndata');
+            assert.deepEqual(data,field.getData());
+        })
     });
     describe('.Text', function() {
         var text = new fields.Text('username', {

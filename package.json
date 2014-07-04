@@ -1,6 +1,6 @@
 {
   "name": "mpm.form",
-  "version": "0.0.6",
+  "version": "0.0.61",
   "description": "Form library from the web",
   "main": "form.js",
   "scripts": {

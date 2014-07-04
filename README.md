@@ -8,7 +8,7 @@ http://mparaiso.github.io/mpm.form/doc/
 
 [![Build Status](https://travis-ci.org/Mparaiso/mpm.form.png?branch=master)](https://travis-ci.org/Mparaiso/mpm.form)
 
-version: 0.0.6
+version: 0.0.61
 
 author: mparaiso <mparaiso@online.fr>
 

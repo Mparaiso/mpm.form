@@ -79,6 +79,13 @@ fields.Base.prototype.setParent = function(parent) {
     this._parent = parent;
 };
 /**
+ * bind request field value to field value
+ * @param value
+ */
+fields.Base.prototype.bind=function(value){
+    this._data=value;
+}
+/**
  *
  * @param data
  */
@@ -87,7 +94,7 @@ fields.Base.prototype.setData = function(data) {
     if(this.options.transform && this.options.transform.from instanceof Function){
         from=this.options.transform.from;
     }
-    this._data = from(data);
+    this.bind(from(data));
 };
 /**
  *
@@ -133,12 +140,7 @@ fields.Base.prototype.validateSync = function() {
 fields.Base.prototype.getName = function() {
     return this.name;
 };
-/**
- * @todo  implement
- */
-fields.Base.prototype.processData = function() {
-    return;
-};
+
 /**
  *
  * @returns {{options: *, name: *, type: *, data: (*|Array|Array|string)}}
@@ -288,7 +290,7 @@ fields.Check.prototype.getAttributes = function() {
  *
  * @param data
  */
-fields.Check.prototype.setData = function(data) {
+fields.Check.prototype.bind = function(data) {
     this._data = data;
     if (_.isUndefined(data)) {
         delete this.options.attributes.checked;
@@ -320,7 +322,8 @@ fields.Boolean.prototype.getAttributes=function(){
     attr.value=true;
     return attr;
 };
-fields.Boolean.prototype.setData = function(data) {
+
+fields.Boolean.prototype.bind = function(data) {
     if (data) {
         this._data = true;
         this.options.attributes.checked = "checked";
@@ -505,7 +508,7 @@ fields.Select.prototype.toHTML = function(attributes) {
         options: this.getChoices().map(fields.Option.fromData)
     });
 };
-fields.Select.prototype.setData = function(data) {
+fields.Select.prototype.bind=function(data){
     this._data = _.isArray(data) ? data : [data];
     this._choices.forEach(function(c) {
         if (_.has(this._data, c.value)) {
@@ -514,7 +517,8 @@ fields.Select.prototype.setData = function(data) {
             delete c.attributes.selected;
         }
     }, this);
-};
+}
+
 fields.Select.prototype.getData = function() {
     return this.getChoices().filter(function(c) {
         return c.attributes.selected;
@@ -552,7 +556,7 @@ fields.CheckboxGroup.prototype.toHTML = function(attributes) {
  *
  * @param data
  */
-fields.CheckboxGroup.prototype.setData = function(data) {
+fields.CheckboxGroup.prototype.bind = function(data) {
     this._data = _.isArray(data) ? data : [data];
     this.getChoices().forEach(function(c) {
         if (_.contains(this._data, c.value)) {
@@ -601,7 +605,7 @@ fields.RadioGroup.prototype.toHTML = function(attributes) {
  *
  * @param data
  */
-fields.RadioGroup.prototype.setData = function(data) {
+fields.RadioGroup.prototype.bind = function(data) {
     this._data = _.isArray(data) ? data : [data];
     this.getChoices().forEach(function(c) {
         if (_.contains(this._data, c.value)) {
@@ -652,10 +656,10 @@ fields.Repeated = function(name, options) {
 };
 util.inherits(fields.Repeated, fields.Base);
 
-fields.Repeated.prototype.setData = function(data) {
+fields.Repeated.prototype.bind=function(data){
     this._data = data instanceof Array ? data : [data];
     return this;
-};
+}
 
 fields.Repeated.prototype.getData = function() {
     if (this._data instanceof Array) {

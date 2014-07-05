@@ -317,7 +317,7 @@ form.FormBuilder.prototype.bind = function(body) {
     var modelProto = model ? Object.getPrototypeOf(model) : null;
     this.getFields().forEach(function(field) {
         var name = field.getName();
-        field.setData(body[name]);
+        field.bind(body[name]);
         if (model && (model[name] || modelProto[name])) {
             model[name] = field.getData();
         }

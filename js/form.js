@@ -314,11 +314,10 @@ form.FormBuilder.prototype.hasError = function() {
  */
 form.FormBuilder.prototype.bind = function(body) {
     var model = this.getModel();
-    var modelProto = model ? Object.getPrototypeOf(model) : null;
     this.getFields().forEach(function(field) {
         var name = field.getName();
         field.bind(body[name]);
-        if (model && (model[name] || modelProto[name])) {
+        if(model){
             model[name] = field.getData();
         }
     }, this);

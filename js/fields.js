@@ -336,7 +336,7 @@ fields.Boolean.prototype.getData = function() {
     return this._data;
 };
 /**
- *
+ * @augments {fields.Base}
  * @constructor
  */
 fields.Label = function() {
@@ -345,7 +345,7 @@ fields.Label = function() {
     this.template = _.template('<label <%=attributes%> ><%-name%></label>');
     this.defaults = {};
 };
-fields.Label.prototype = new fields.Base();
+fields.Label.prototype = Object.create(fields.Base.prototype)
 fields.Label.prototype.constructor = fields.Base;
 /**
  *
@@ -386,7 +386,7 @@ fields.Radio.fromData = function(data) {
 };
 util.inherits(fields.Radio, fields.Text);
 /**
- * @augments fields.Text
+ * @augments {fields.Text}
  * @constructor
  */
 fields.Button = function() {
@@ -442,14 +442,14 @@ fields.Option.prototype.toHTML = function(attributes) {
 /**
  *
  * @constructor
- * @augments fields.Base
+ * @augments {fields.Base}
  */
 fields.Choices = function() {
     fields.Base.apply(this, [].slice.apply(arguments));
     this.type = "choices";
     this.setChoices(this.options.choices || []);
 };
-fields.Choices.prototype = new fields.Base();
+fields.Choices.prototype = Object.create(fields.Base.prototype) 
 fields.Choices.prototype.constructor = fields.Base;
 fields.Choices.prototype.getChoices = function() {
     return this._choices;
@@ -509,9 +509,10 @@ fields.Select.prototype.toHTML = function(attributes) {
     });
 };
 fields.Select.prototype.bind=function(data){
-    this._data = _.isArray(data) ? data : [data];
+    var tempData = _.isArray(data) ? data : [data];
+    this._data = data;
     this._choices.forEach(function(c) {
-        if (_.has(this._data, c.value)) {
+        if (~tempData.indexOf(c.value)) {
             c.attributes.selected = "selected";
         } else {
             delete c.attributes.selected;
@@ -519,13 +520,6 @@ fields.Select.prototype.bind=function(data){
     }, this);
 }
 
-fields.Select.prototype.getData = function() {
-    return this.getChoices().filter(function(c) {
-        return c.attributes.selected;
-    }).map(function(c) {
-        return c.value;
-    });
-};
 /**
  * @constructor
  */

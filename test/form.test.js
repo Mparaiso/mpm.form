@@ -1,3 +1,4 @@
+/*jslint eqeq:true,node:true,es5:true,white:true,plusplus:true,nomen:true,unparam:true,devel:true,regexp:true */
 /*global describe,it,beforeEach */
 "use strict";
 var expect = require('chai').expect;
@@ -25,6 +26,22 @@ describe('form', function() {
     });
 });
 describe('form', function() {
+
+    describe('form with select field',function  () {
+        beforeEach(function  () {
+            this.countries = ['FR','EN','IT'];
+            this.form = form.create('countries')
+            .add('country','select',{choices:this.countries});
+            this.form.bind({country:'FR'});
+        }); 
+        it('FR should be selected',function() {
+            expect(this.form.getField('country')
+                .toJSON()
+                .choices.filter(function(c){return c.key=="FR" && c.attributes.selected=="selected";})[0]
+                ).not.to.be.null
+        })
+
+    })
     describe('#create', function() {
         beforeEach(function() {
             this.genders = ['male', 'female', 'other'];

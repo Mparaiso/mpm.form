@@ -77,7 +77,7 @@ form.loaders.FieldLoader.prototype.load = function(name, type, options) {
 
 /**
  * load fields by actual type: ex: fields.Email
- *
+ * @augments {form.loaders.FieldLoader}
  * @constructor
  */
 form.loaders.FieldTypeLoader = function() {
@@ -111,13 +111,16 @@ form.FormBuilder = function(name) {
 form.FormBuilder.prototype.getName = function() {
     return this._name;
 };
+/**
+ * @member private
+ */
 form.FormBuilder.prototype.getPrefix = function() {
     return this._name + "_";
 };
 /**
  * given a prefixed name , return name
- * @param name
- * @returns {*}
+ * @param {string} name
+ * @returns {string}
  */
 form.FormBuilder.prototype.getNameWithoutPrefix = function(name) {
     return name.replace(this.getPrefix(), "");
@@ -162,7 +165,7 @@ form.FormBuilder.prototype.add = function(name, type, options) {
     } else {
         _field = this.resolveField(name, type, options);
     }
-    if (_field !== undefined) {
+    if (_field !== undefined && _field.getOptions().attributes.id === undefined) {
         _field.getOptions().attributes.id = this.getPrefix() + _field.getName();
         this.getFields().push(_field);
     }
@@ -238,13 +241,19 @@ form.FormBuilder.prototype.getData = function() {
 /**
  * Find field by name
  * @param name
+ * @deprecated
  * @returns {*}
  */
 form.FormBuilder.prototype.getByName = function(name) {
+    console.warn("form.FormBuilder.prototype.getByName is deprecated,use form.FormBuilder.prototype.getField instead")
     return _.find(this._fields, function(field) {
         return field.name === this.getNameWithoutPrefix(name);
     }, this);
 };
+/**
+ * @method
+ */
+form.FormBuilder.prototype.getField = form.FormBuilder.prototype.getByName;
 form.FormBuilder.prototype.find = form.FormBuilder.prototype.getByName;
 form.FormBuilder.prototype.getName = function() {
     return this._name;
